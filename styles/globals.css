@@ -5,3 +5,10 @@ html {
   color: white;
   font-size: calc(15px + 0.390625vw);
 }
+
+#content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

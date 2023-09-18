@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import styles from '@/styles/index.module.css'
 import { useRouter } from 'next/router';
 import Layout from '@/components/layout';
@@ -11,7 +10,7 @@ export default function Home() {
   };
   return (
     <Layout pageTitle="Home">
-      <div id={styles.content}>
+      <div id="content">
         <h1 className={styles.title}>100 DAYS OF PRODUCTIVITY</h1>
         <ul>
           <li className={styles.point}>Be accountable: Join a group for 100 days of focus, motivation and discipline.</li>
