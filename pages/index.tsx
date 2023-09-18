@@ -1,11 +1,13 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
-
-const inter = Inter({ subsets: ['latin'] })
+import styles from '@/styles/Index.module.css'
+import { useRouter } from 'next/router';
 
 export default function Home() {
+  const router = useRouter();
+
+  const redirectToJoin = () => {
+    router.push('/create-account');
+  };
   return (
     <>
       <Head>
@@ -14,7 +16,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
+      <div id={styles.content}>
+        <h1 className={styles.title}>100 DAYS OF PRODUCTIVITY</h1>
+        <ul>
+          <li className={styles.point}>Be accountable: Join a group for 100 days of focus, motivation and discipline.</li>
+          <li className={styles.point}>Get support: Encouragement and advice from others walking the same path.</li>
+          <li className={styles.point}>Learn faster: Succeed together and grow from each other's experiences.</li>
+        </ul>
+        <button onClick={redirectToJoin} className={styles.join_button}><span className={styles.join_link}>join us</span></button>
+      </div>
     </>
   )
 }
