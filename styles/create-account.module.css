@@ -23,7 +23,7 @@
     width: 30rem;
     height:10rem;
     font-size: 1.1rem;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
   
 .signup_textarea:focus {
@@ -66,4 +66,60 @@
     .signup_textarea {
       width: 15rem;
     }
+}
+
+.houses {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.houses input[type="radio"] {
+  opacity: 0.01;
+}
+
+.houses input[type="radio"]:checked+label,
+.Checked+label {
+  background: rgb(40, 40, 31);
+}
+
+.houses li {
+  padding: 2px;
+  cursor: pointer;
+  width: 4rem;
+  height: 1.5rem;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  position: relative;
+}
+
+.houses label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.verdant {
+  border: 2px dashed rgb(5, 212, 5);
+  color: rgb(5, 241, 5);
+}
+
+.lumos {
+  border: 2px dashed rgb(209, 209, 4);
+  color: rgba(255, 255, 0, 1);
+}
+
+.erythro {
+  border: 2px dashed rgb(241, 17, 17);
+  color: rgb(252, 45, 45)
+}
+
+.azurite {
+  border: 2px dashed rgb(0, 68, 255);
+  color: rgb(48, 102, 250)
 }
