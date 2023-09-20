@@ -1,0 +1,38 @@
+.name {
+    font-size: 1.1rem;
+}
+
+.time {
+    margin-top: -1.1rem;
+    color: #55F50A;
+    font-size: 0.9rem;
+}
+
+.input {
+    background: transparent;
+    border: 1px dashed white;
+    color: white;
+    width: 10rem;
+    height:2rem;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    margin-right:5px;
+}
+  
+.input:focus {
+    outline: none;
+}
+
+.button {
+    width: 10rem;
+    height:2rem;
+    background: white;
+    color: black;
+    border: none;
+    font-weight:bold;
+    font-size: 1rem;
+}
+  
+.button:hover {
+    background-color: #d1d1d1
+}
