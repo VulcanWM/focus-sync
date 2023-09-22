@@ -27,7 +27,7 @@ export default function Home() {
     }
 
     function deleteTask(task: string){
-        const newTasks = tasks;
+        const newTasks = {...tasks}; 
         console.log(newTasks)
         delete (newTasks[task])
         console.log(newTasks)
