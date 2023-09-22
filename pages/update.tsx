@@ -1,6 +1,8 @@
 import Layout from '@/components/layout';
 import styles from '@/styles/update.module.css'
 import {useState} from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 interface Tasks {
     [key: string]: number; 
@@ -9,7 +11,7 @@ interface Tasks {
 export default function Home() {
     const [tasks, setTasks] = useState<Tasks>({})
     const [taskName, setTaskName] = useState("")
-    const [taskTime, setTaskTime] = useState(0)
+    const [taskTime, setTaskTime] = useState(5)
     const [msg, setMsg] = useState("Only include tasks relevant to your goal")
 
     function createTask(){
@@ -24,6 +26,14 @@ export default function Home() {
         setMsg("Only include tasks relevant to your goal")
     }
 
+    function deleteTask(task: string){
+        const newTasks = tasks;
+        console.log(newTasks)
+        delete (newTasks[task])
+        console.log(newTasks)
+        setTasks(newTasks)
+    }
+
     return (
         <Layout pageTitle="Home">
             <div id="content">
@@ -33,9 +43,9 @@ export default function Home() {
                 <input className={styles.input} value={taskTime} placeholder="time taken" type="number" onChange={e => setTaskTime(parseFloat(e.target.value))}></input>
                 <button className={styles.button} onClick={createTask}>create task</button>
                 { 
-                    Object.keys(tasks).map((task, index) => ( 
+                    Object.keys(tasks).map((task) => ( 
                         <>
-                            <p className={styles.name}> ✓ {task}</p>
+                            <p className={styles.name}> ✓ {task} <FontAwesomeIcon onClick={() => deleteTask(task)} icon={faTrashCan} style={{width: "0.8rem", height: "0.8rem", cursor:"pointer"}}/></p>
                             <p className={styles.time}>{tasks[task as keyof Tasks]} mins</p>
                         </>
                     ))
