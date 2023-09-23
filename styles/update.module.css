@@ -36,3 +36,13 @@
 .button:hover {
     background-color: #d1d1d1
 }
+
+.success {
+    color: #55F50A;
+    font-size: 0.9rem;
+}
+
+.red {
+    color: red;
+    font-size: 0.9rem;
+}

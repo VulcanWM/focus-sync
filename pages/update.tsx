@@ -71,7 +71,7 @@ export default function Home() {
         <Layout pageTitle="Home">
             <div id="content">
                 <h2>Daily Update</h2>
-                <p>{msg}</p>
+                <p className={msg=="Only include tasks relevant to your goal"?styles.success:styles.red}>{msg}</p>
                 <input className={styles.input} value={taskName} placeholder="productive task" type="text" onChange={e => setTaskName(e.target.value)}></input>
                 <input className={styles.input} value={taskTime} placeholder="time taken" type="number" onChange={e => setTaskTime(parseFloat(e.target.value))}></input>
                 <button className={styles.button} onClick={createTask}>create task</button>
