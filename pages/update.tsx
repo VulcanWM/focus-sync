@@ -28,9 +28,42 @@ export default function Home() {
 
     function deleteTask(task: string){
         const newTasks = {...tasks}; 
-        console.log(newTasks)
         delete (newTasks[task])
+        setTasks(newTasks)
+    }
+
+    function allowDrop(ev: React.DragEvent<HTMLDivElement>) {
+        ev.preventDefault(); 
+    }
+      
+    function drag(ev: React.DragEvent<HTMLDivElement>) {
+        ev.dataTransfer!.setData("text", (ev.target as HTMLDivElement).title);
+    }
+      
+    function drop(ev: React.DragEvent<HTMLDivElement>) {
+        ev.preventDefault();
+        let key1 = ev.dataTransfer!.getData("text");
+        const key2 = (ev.target as HTMLDivElement).title;
+        console.log(key2)
+        
+        const keys = Object.keys(tasks);
+        const values = Object.values(tasks);
+    
+        const keyIndex1 = keys.indexOf(key1);
+        const keyIndex2 = keys.indexOf(key2);
+    
+        [keys[keyIndex1], keys[keyIndex2]] = [keys[keyIndex2], keys[keyIndex1]];
+        [values[keyIndex1], values[keyIndex2]] = [values[keyIndex2], values[keyIndex1]];
+    
+        const newTasks: Tasks = {};
+        keys.forEach((key, index) => {
+          newTasks[key] = values[index]; 
+        });
+    
+        setTasks(newTasks);
+
         console.log(newTasks)
+
         setTasks(newTasks)
     }
 
@@ -44,10 +77,10 @@ export default function Home() {
                 <button className={styles.button} onClick={createTask}>create task</button>
                 { 
                     Object.keys(tasks).map((task) => ( 
-                        <>
-                            <p className={styles.name}> ✓ {task} <FontAwesomeIcon onClick={() => deleteTask(task)} icon={faTrashCan} style={{width: "0.8rem", height: "0.8rem", cursor:"pointer"}}/></p>
-                            <p className={styles.time}>{tasks[task as keyof Tasks]} mins</p>
-                        </>
+                        <div title={task} onDrop={(event) => drop(event)} onDragOver={(event) => allowDrop(event)} onDragStart={(event) => drag(event)} draggable={true}>
+                            <p title={task} className={styles.name}> ✓ {task} <FontAwesomeIcon onClick={() => deleteTask(task)} icon={faTrashCan} style={{width: "0.8rem", height: "0.8rem", cursor:"pointer", color: "red"}}/></p>
+                            <p title={task} className={styles.time}>{tasks[task as keyof Tasks]} mins</p>
+                        </div>
                     ))
                 }
             </div>
