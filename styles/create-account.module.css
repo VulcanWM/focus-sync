@@ -106,7 +106,7 @@
 
 .verdant {
   border: 2px dashed rgb(5, 212, 5);
-  color: rgb(5, 241, 5);
+  color: #00FF1A;
 }
 
 .lumos {
@@ -116,7 +116,7 @@
 
 .erythro {
   border: 2px dashed rgb(241, 17, 17);
-  color: rgb(252, 45, 45)
+  color: #FF0000;
 }
 
 .azurite {
@@ -125,6 +125,10 @@
 }
 
 .email {
-  color: #55F50A;
+  color: #00FF1A;
   font-size: 0.9rem;
+}
+
+.error {
+  color: #FF0000;
 }
