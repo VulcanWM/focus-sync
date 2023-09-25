@@ -11,9 +11,9 @@ export default function Home() {
   return (
     <Layout pageTitle="Home">
       <div id="content">
-        <h1 className={styles.title}>100 DAYS OF PRODUCTIVITY</h1>
+        <h1 className={styles.title}>FocusSync</h1>
         <ul>
-          <li className={styles.point}>Be accountable: Join a group for 100 days of focus, motivation and discipline.</li>
+          <li className={styles.point}>Be accountable: Join a group for days of focus, motivation and discipline.</li>
           <li className={styles.point}>Get support: Encouragement and advice from others walking the same path.</li>
           <li className={styles.point}>Learn faster: Succeed together and grow from each other's experiences.</li>
         </ul>
