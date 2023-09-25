@@ -110,8 +110,8 @@
 }
 
 .lumos {
-  border: 2px dashed rgb(209, 209, 4);
-  color: rgba(255, 255, 0, 1);
+  border: 2px dashed #ba9303;
+  color: #FFC700;
 }
 
 .erythro {
@@ -120,8 +120,8 @@
 }
 
 .azurite {
-  border: 2px dashed rgb(0, 68, 255);
-  color: rgb(48, 102, 250)
+  border: 2px dashed #008dda;
+  color: #25B1FF;
 }
 
 .email {
