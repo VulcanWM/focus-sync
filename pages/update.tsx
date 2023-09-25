@@ -43,27 +43,17 @@ export default function Home() {
     function drop(ev: React.DragEvent<HTMLDivElement>) {
         ev.preventDefault();
         let key1 = ev.dataTransfer!.getData("text");
-        const key2 = (ev.target as HTMLDivElement).title;
-        console.log(key2)
-        
+        const key2 = (ev.target as HTMLDivElement).title
         const keys = Object.keys(tasks);
         const values = Object.values(tasks);
-    
         const keyIndex1 = keys.indexOf(key1);
         const keyIndex2 = keys.indexOf(key2);
-    
         [keys[keyIndex1], keys[keyIndex2]] = [keys[keyIndex2], keys[keyIndex1]];
         [values[keyIndex1], values[keyIndex2]] = [values[keyIndex2], values[keyIndex1]];
-    
         const newTasks: Tasks = {};
         keys.forEach((key, index) => {
           newTasks[key] = values[index]; 
         });
-    
-        setTasks(newTasks);
-
-        console.log(newTasks)
-
         setTasks(newTasks)
     }
 
@@ -83,6 +73,8 @@ export default function Home() {
                         </div>
                     ))
                 }
+                {Object.keys(tasks).length > 0 &&
+                <button className={styles.button}>submit update</button>}
             </div>
         </Layout>
   )
