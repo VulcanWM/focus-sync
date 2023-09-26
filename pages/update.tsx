@@ -6,7 +6,7 @@ import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 
 interface Tasks {
     [key: string]: number; 
-  }
+}
 
 export default function Home() {
     const [tasks, setTasks] = useState<Tasks>({})
@@ -74,7 +74,9 @@ export default function Home() {
                     ))
                 }
                 {Object.keys(tasks).length > 0 &&
-                <button className={styles.button}>submit update</button>}
+                <>
+                    <button className={styles.button}>submit update</button>
+                </>}
             </div>
         </Layout>
   )

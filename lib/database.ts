@@ -1,5 +1,6 @@
 import dbConnect from './mongodb'
 import User from '../models/User'
+import Update from '@/models/Update';
 
 export async function get_user(username: String) {
     await dbConnect();
@@ -24,6 +25,9 @@ export async function get_user_from_email(email: String) {
 export async function create_user(username: string, email: string, goal: string, house: string) {
     await dbConnect();
     username = username.toLowerCase();
+    if (username.includes(":")){
+        return "You cannot have : in your username!"
+    }
     if (await get_user(username) != false){
         return "This username already exists!"
     }
@@ -45,4 +49,40 @@ export async function create_user(username: string, email: string, goal: string,
     }
     const user = await User.create({username: username, email: email, goal: goal})
     return true
+}
+
+export async function get_last_update(username: string){
+    const last_update = await Update.find({username: username}).sort({day: -1}).limit(1)
+    return last_update
+}
+
+export async function create_update(username: string, date: Date, rating: number, tasks: object){
+    const last_update = await get_last_update(username)
+    var day: number;
+    if (last_update.length == 0){
+        day = 1
+    } else {
+        day = last_update[0].day + 1
+    }
+    const update_id: string = username + ":" + day.toString()
+    const user = await get_user(username)
+    if (user == false){
+        return "Your username does not exist!"
+    } 
+    const house = user.house;
+    if (Object.keys(tasks).length == 0){
+        return "You have to have at least one task!"
+    }
+    if (Object.keys(tasks).length > 10){
+        return "You can add a maximum of 10 tasks!"
+    }
+    if (!(rating >= 0 && rating <=5)){
+        return "Your rating has to be between 0 and 5 (inclusive)!"
+    }
+    if (date <= last_update[0].date){
+        return "You have to submit an update after your last update's date!"
+    }
+
+    const update = await Update.create({_id: update_id, username: username, house: house, date: date, rating: rating, tasks: tasks, day: day})
+    return update
 }

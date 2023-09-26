@@ -2,7 +2,7 @@ import Layout from '@/components/layout';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./api/auth/[...nextauth]"
 import { GetServerSidePropsContext } from 'next'
-import { get_user_from_email } from '@/lib/database';
+import { get_user_from_email, create_update } from '@/lib/database';
 
 type Props = {
   userString: string
@@ -29,6 +29,10 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (session){
     const email = session!.user!.email as string;
     const user = await get_user_from_email(email)
+
+    // const func = await create_update(user.username, new Date(2023, 8, 26), 4, {"bio": 5})
+    // console.log(func)
+
     if (user == false){
       return {
         redirect: {
