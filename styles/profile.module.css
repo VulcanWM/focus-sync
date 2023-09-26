@@ -1,0 +1,11 @@
+.goal {
+    border: 2px dashed grey;
+    padding: 5px;
+    text-align: left;
+}
+
+.update {
+    border: 2px dashed grey;
+    padding: 5px;
+    margin: 5px;
+}

@@ -2,7 +2,7 @@ import dbConnect from './mongodb'
 import User from '../models/User'
 import Update from '@/models/Update';
 
-export async function get_user(username: String) {
+export async function get_user(username: string) {
     await dbConnect();
     const user = await User.find({username: username})
     if (user.length == 0){
@@ -12,7 +12,7 @@ export async function get_user(username: String) {
     }
 }
 
-export async function get_user_from_email(email: String) {
+export async function get_user_from_email(email: string) {
     await dbConnect();
     const user = await User.find({email: email})
     if (user.length == 0){
@@ -85,4 +85,9 @@ export async function create_update(username: string, date: Date, rating: number
 
     const update = await Update.create({_id: update_id, username: username, house: house, date: date, rating: rating, tasks: tasks, day: day})
     return update
+}
+
+export async function get_updates(username: string){
+    const updates = await Update.find({username: username}).sort({day: -1})
+    return updates
 }
