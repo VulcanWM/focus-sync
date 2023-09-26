@@ -10,8 +10,10 @@ interface Tasks {
 
 export default function Home() {
     const [tasks, setTasks] = useState<Tasks>({})
-    const [taskName, setTaskName] = useState("")
-    const [taskTime, setTaskTime] = useState(5)
+    const [taskName, setTaskName] = useState<string>("")
+    const [taskTime, setTaskTime] = useState<number>(5)
+    const [rating, setRating] = useState<number>(3)
+    const [date, setDate] = useState("")
     const [msg, setMsg] = useState("Only include tasks relevant to your goal")
 
     function createTask(){
@@ -75,6 +77,8 @@ export default function Home() {
                 }
                 {Object.keys(tasks).length > 0 &&
                 <>
+                    <input min={0} max={5} className={styles.input} value={rating} placeholder="rating productivity" type="number" onChange={e => setRating(parseInt(e.target.value))}></input>
+                    <input className={styles.input} value={date} placeholder="update date" type="date" onChange={e => setDate(e.target.value)}></input>
                     <button className={styles.button}>submit update</button>
                 </>}
             </div>
