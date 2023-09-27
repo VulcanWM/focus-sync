@@ -4,7 +4,6 @@ const UserSchema = new mongoose.Schema({
   username: String,
   email: String,
   goal: String,
-  updates: [String],
   following: [String],
   house: String
 })

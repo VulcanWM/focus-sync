@@ -34,8 +34,8 @@ export default function Home( { userString, updatesString}:Props ) {
                     { 
                         Object.keys(update.tasks).map((task: string, index:number) => ( 
                             <>
-                                <p>✓ {task}</p>
-                                <p>{update.tasks[task]} mins</p>
+                                <p className={styles.name}>✓ {task}</p>
+                                <p className={`${styles.time} ${styles[user.house]}`}>{update.tasks[task]} mins</p>
                             </>
                         ))
                     }
