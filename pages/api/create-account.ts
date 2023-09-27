@@ -23,7 +23,6 @@ export default async function handler(
     } else {
       res.redirect(`/create-account?error=${func}`)
     }
-    res.status(200).json({ name: req.body.goal })
   } else {
     res.redirect("/create-account")
   }

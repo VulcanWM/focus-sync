@@ -84,7 +84,7 @@ export async function create_update(username: string, date: Date, rating: number
     }
 
     const update = await Update.create({_id: update_id, username: username, house: house, date: date, rating: rating, tasks: tasks, day: day})
-    return update
+    return true
 }
 
 export async function get_updates(username: string){
