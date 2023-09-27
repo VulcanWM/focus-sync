@@ -79,6 +79,9 @@ export async function create_update(username: string, date: Date, rating: number
     if (!(rating >= 0 && rating <=5)){
         return "Your rating has to be between 0 and 5 (inclusive)!"
     }
+    if (new Date() <= date){
+        return "You cannot submit updates for the future!"
+    }
     if (last_update.length != 0){
         if (date <= last_update[0].date){
             return "You have to submit an update after your last update's date!"
