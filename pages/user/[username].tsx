@@ -22,7 +22,7 @@ export default function Home( { userString, updatesString}:Props ) {
   return (
     <Layout pageTitle={`${user.username}'s profile`}>
       <div id="content">
-        <h2>{user.username}</h2>
+        <h2 className={styles.user_heading}><img className={styles.house} alt={`${user.house} logo`} src={`/${user.house}.png`}/> {user.username}</h2>
         <div className={styles.goal}>
             <h3>Goal:</h3>
             <p>{user.goal}</p>

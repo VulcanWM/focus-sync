@@ -34,3 +34,15 @@
 .azurite {
     color: #25B1FF;
 }
+
+.house {
+    vertical-align: middle;
+    height: 1.5rem;
+    width: 1.5rem;
+    float:middle;
+    margin:0 5px 0 0
+}
+
+.user_heading {
+    display:inline
+}
