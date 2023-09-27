@@ -3,12 +3,25 @@ import styles from '@/styles/update.module.css'
 import {useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios'
+import { useRouter } from 'next/router';
+import { get_user_from_email } from '@/lib/database';
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "./api/auth/[...nextauth]"
+import { GetServerSidePropsContext } from 'next'
 
 interface Tasks {
     [key: string]: number; 
 }
 
-export default function Home() {
+type Props = {
+    userString: string
+};
+
+export default function Update({userString}: Props) {
+    const router = useRouter();
+    const user = JSON.parse(userString)
+
     const [tasks, setTasks] = useState<Tasks>({})
     const [taskName, setTaskName] = useState<string>("")
     const [taskTime, setTaskTime] = useState<number>(5)
@@ -59,6 +72,21 @@ export default function Home() {
         setTasks(newTasks)
     }
 
+    async function createUpdate(){
+        const userData = {
+            tasks: tasks,
+            rating: rating,
+            date: date
+        }
+        axios.post(`http://localhost:3000/api/update`, userData).then((response) => {
+            if (response.data.error == false){
+                router.push(`/user/${user.username}`);
+            } else {
+                setMsg(response.data.message)
+            }
+        });
+    }
+
     return (
         <Layout pageTitle="Home">
             <div id="content">
@@ -79,9 +107,43 @@ export default function Home() {
                 <>
                     <input min={0} max={5} className={styles.input} value={rating} placeholder="rating productivity" type="number" onChange={e => setRating(parseInt(e.target.value))}></input>
                     <input className={styles.input} value={date} placeholder="update date" type="date" onChange={e => setDate(e.target.value)}></input>
-                    <button className={styles.button}>submit update</button>
+                    <button className={styles.button} onClick={createUpdate}>submit update</button>
                 </>}
             </div>
         </Layout>
   )
 }
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+    const session = await getServerSession(
+      context.req,
+      context.res,
+      authOptions
+    )
+    if (session){
+      const email = session!.user!.email as string;
+      const user = await get_user_from_email(email)
+  
+      if (user == false){
+        return {
+          redirect: {
+            destination: '/',
+            permanent: false,
+          },
+        }
+      } else {
+        return {
+          props: {
+            userString: JSON.stringify(user)
+          },
+        }
+      }
+    } else {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      }
+    }
+  }

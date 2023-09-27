@@ -16,7 +16,8 @@ export default async function handler(
   if (session) {
     const rating = req.body.rating as number;
     const tasks = req.body.tasks as object;
-    const date = req.body.date as Date
+    const dateString = String(req.body.date);
+    const date = new Date(dateString)
     const user = await get_user_from_email(session!.user!.email as string);
     const username = user.username;
     const func = await create_update(username, date, rating, tasks)
