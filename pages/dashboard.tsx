@@ -2,19 +2,45 @@ import Layout from '@/components/layout';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./api/auth/[...nextauth]"
 import { GetServerSidePropsContext } from 'next'
-import { get_user_from_email } from '@/lib/database';
+import { get_user_from_email, get_latest_updates, create_update } from '@/lib/database';
+import styles from '@/styles/dashboard.module.css'
 
 type Props = {
-  userString: string
+  userString: string,
+  updatesString: string
 };
 
-export default function Home( {userString}: Props ) {
+type UpdateType = {
+  tasks: {
+    [task: string]: number;  
+  },
+  day: number,
+  username: string
+}
+
+export default function Home( {userString, updatesString}: Props ) {
   const user = JSON.parse(userString)
+  const updates = JSON.parse(updatesString)
   return (
     <Layout pageTitle="Home">
-      <div id="content">
-        <h1>Dashboard</h1>
-        <p>{user.username}</p>
+      <div id="content_notcenter">
+        <h1>Hello {user.username}</h1>
+        { 
+            updates.map((update: UpdateType, index: number) => ( 
+                <div className={styles.update}>
+                    <p><strong>{update.username}</strong></p>
+                    <p>Day {update.day}</p>
+                    { 
+                        Object.keys(update.tasks).map((task: string, index:number) => ( 
+                            <>
+                                <p className={styles.name}>✓ {task}</p>
+                                <p className={`${styles.time} ${styles[user.house]}`}>{update.tasks[task]} mins</p>
+                            </>
+                        ))
+                    }
+                </div>
+            ))
+        }
       </div>
     </Layout>
   )
@@ -38,9 +64,14 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         },
       }
     } else {
+      const updates = await get_latest_updates()
+      // for (let i = 1; i <= 31; i++) {
+      //   await create_update(user.username, new Date(`2023-09-${String(i)}`), 3, {"chem": i})
+      // }
       return {
         props: {
-          userString: JSON.stringify(user)
+          userString: JSON.stringify(user),
+          updatesString: JSON.stringify(updates)
         },
       }
     }

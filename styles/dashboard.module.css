@@ -1,0 +1,30 @@
+.update {
+    border: 2px dashed grey;
+    padding: 5px;
+    margin: 5px;
+}
+
+.name {
+    font-size: 1.1rem;
+}
+
+.time {
+    margin-top: -1.1rem;
+    font-size: 0.9rem;
+}
+
+.verdant {
+    color: #55F50A;
+}
+
+.erythro {
+    color: #ff0000;
+}
+
+.lumos {
+    color: #FFC700;
+}
+
+.azurite {
+    color: #25B1FF;
+}

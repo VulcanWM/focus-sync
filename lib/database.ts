@@ -95,3 +95,8 @@ export async function get_updates(username: string){
     const updates = await Update.find({username: username}).sort({day: -1})
     return updates
 }
+
+export async function get_latest_updates(){
+    const updates = await Update.find().sort({$natural: -1}).limit(50)
+    return updates
+}
