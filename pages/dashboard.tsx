@@ -4,6 +4,7 @@ import { authOptions } from "./api/auth/[...nextauth]"
 import { GetServerSidePropsContext } from 'next'
 import { get_user_from_email, get_latest_updates, create_update } from '@/lib/database';
 import styles from '@/styles/dashboard.module.css'
+import { useState } from 'react'
 
 type Props = {
   userString: string,
@@ -20,7 +21,7 @@ type UpdateType = {
 
 export default function Home( {userString, updatesString}: Props ) {
   const user = JSON.parse(userString)
-  const updates = JSON.parse(updatesString)
+  const [updates, setUpdates] = useState(JSON.parse(updatesString))
   return (
     <Layout pageTitle="Home">
       <div id="content_notcenter">
@@ -41,6 +42,7 @@ export default function Home( {userString, updatesString}: Props ) {
                 </div>
             ))
         }
+        <button>get more posts</button>
       </div>
     </Layout>
   )
@@ -64,10 +66,11 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         },
       }
     } else {
-      const updates = await get_latest_updates()
       // for (let i = 1; i <= 31; i++) {
       //   await create_update(user.username, new Date(`2023-09-${String(i)}`), 3, {"chem": i})
       // }
+      const updates = await get_latest_updates()
+      console.log(updates)
       return {
         props: {
           userString: JSON.stringify(user),

@@ -5,7 +5,8 @@ const UserSchema = new mongoose.Schema({
   email: String,
   goal: String,
   following: [String],
-  house: String
+  house: String,
+  created: Date
 })
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);

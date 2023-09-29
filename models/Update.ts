@@ -7,7 +7,8 @@ const UpdateSchema = new mongoose.Schema({
   date: Date,
   rating: Number,
   tasks: Object,
-  day: Number
+  day: Number,
+  created: Date
 })
 
 

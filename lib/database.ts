@@ -47,7 +47,8 @@ export async function create_user(username: string, email: string, goal: string,
     if (goal.length > 100){
         return "Your goal cannot contain more than 100 characters!"
     }
-    const user = await User.create({username: username, email: email, goal: goal, house: house, following: []})
+    const created = new Date()
+    const user = await User.create({username: username, email: email, goal: goal, house: house, following: [], created: created})
     return true
 }
 
@@ -87,7 +88,8 @@ export async function create_update(username: string, date: Date, rating: number
             return "You have to submit an update after your last update's date!"
         }
     }
-    const update = await Update.create({_id: update_id, username: username, house: house, date: date, rating: rating, tasks: tasks, day: day})
+    const created = new Date()
+    const update = await Update.create({_id: update_id, username: username, house: house, date: date, rating: rating, tasks: tasks, day: day, created: created})
     return true
 }
 
@@ -97,6 +99,11 @@ export async function get_updates(username: string){
 }
 
 export async function get_latest_updates(){
+    const updates = await Update.find().sort({$natural: -1}).limit(50)
+    return updates
+}
+
+export async function get_latest_updates_after(id: string){
     const updates = await Update.find().sort({$natural: -1}).limit(50)
     return updates
 }
