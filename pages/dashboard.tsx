@@ -2,9 +2,10 @@ import Layout from '@/components/layout';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./api/auth/[...nextauth]"
 import { GetServerSidePropsContext } from 'next'
-import { get_user_from_email, get_latest_updates, create_update } from '@/lib/database';
+import { get_user_from_email, get_latest_updates } from '@/lib/database';
 import styles from '@/styles/dashboard.module.css'
 import { useState } from 'react'
+import axios from 'axios'
 
 type Props = {
   userString: string,
@@ -21,7 +22,26 @@ type UpdateType = {
 
 export default function Home( {userString, updatesString}: Props ) {
   const user = JSON.parse(userString)
+  const [noMorePosts, setNoMorePosts] = useState(false)
   const [updates, setUpdates] = useState(JSON.parse(updatesString))
+
+  async function getPosts(){
+    const userData = {
+        created: updates[updates.length - 1].created
+    }
+    axios.post(`http://localhost:3000/api/next-updates`, userData).then((response) => {
+        if (response.data.error == false){
+            if (response.data.data.length == 0){
+              setNoMorePosts(true)
+            }
+            const newUpdates = updates.concat(response.data.data);
+            setUpdates(newUpdates)
+        } else {
+            console.log("error")
+        }
+    });
+}
+
   return (
     <Layout pageTitle="Home">
       <div id="content_notcenter">
@@ -42,7 +62,7 @@ export default function Home( {userString, updatesString}: Props ) {
                 </div>
             ))
         }
-        <button>get more posts</button>
+        {noMorePosts == false && <button onClick={getPosts}>get more posts</button>}
       </div>
     </Layout>
   )
@@ -70,7 +90,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       //   await create_update(user.username, new Date(`2023-09-${String(i)}`), 3, {"chem": i})
       // }
       const updates = await get_latest_updates()
-      console.log(updates)
+      // const after = await get_latest_updates_after(updates[updates.length - 1].created)
+      // console.log(after)
       return {
         props: {
           userString: JSON.stringify(user),

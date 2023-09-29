@@ -103,7 +103,7 @@ export async function get_latest_updates(){
     return updates
 }
 
-export async function get_latest_updates_after(id: string){
-    const updates = await Update.find().sort({$natural: -1}).limit(50)
+export async function get_latest_updates_after(date: Date){
+    const updates = await Update.find({created: {$lt: date}}).sort({$natural: -1}).limit(50)
     return updates
 }
