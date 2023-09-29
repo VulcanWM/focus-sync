@@ -62,7 +62,7 @@ export default function Home( {userString, updatesString}: Props ) {
                 </div>
             ))
         }
-        {noMorePosts == false && <button onClick={getPosts}>get more posts</button>}
+        {noMorePosts == false && <button className={styles.more_posts}onClick={getPosts}>get more posts</button>}
       </div>
     </Layout>
   )

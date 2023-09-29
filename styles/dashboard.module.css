@@ -28,3 +28,17 @@
 .azurite {
     color: #25B1FF;
 }
+
+.more_posts {
+    width: 10rem;
+    height:2rem;
+    background: white;
+    color: black;
+    border: none;
+    font-weight:bold;
+    font-size: 1rem;
+}
+  
+.more_posts:hover {
+    background-color: #d1d1d1
+}
