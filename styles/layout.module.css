@@ -1,0 +1,23 @@
+.navbar {
+    text-align: center;
+    overflow: hidden;
+    /* border-bottom: 1px solid white; */
+    position: sticky;
+    top: 0;
+}
+  
+.navbar a {
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: lowercase;
+    text-decoration: none;
+    color: white;
+    padding: 8px 0px;
+    margin: 0px 20px;
+    display: inline-block;
+    position: relative;
+}
+  
+.navbar a:hover {
+    opacity: 0.5;
+}

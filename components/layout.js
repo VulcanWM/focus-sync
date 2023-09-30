@@ -1,4 +1,6 @@
 import Head from 'next/head';
+import Link from 'next/link';
+import styles from '../styles/layout.module.css'
 
 const siteTitle = "FocusSync";
 
@@ -29,6 +31,11 @@ export default function Layout({ pageTitle, children }) {
         <meta name="keywords" content=""/>
         <title>{title}</title>
       </Head>
+      <div className={styles.navbar} id="navbar">
+        <Link href="/dashboard">Dashboard</Link>
+        <Link href="/update">Daily Update</Link>
+        <Link href="/stats">Stats</Link>
+      </div>
       <main>{children}</main>
     </div>
   );
