@@ -6,6 +6,8 @@ import { get_user_from_email, get_latest_updates } from '@/lib/database';
 import styles from '@/styles/dashboard.module.css'
 import { useState } from 'react'
 import axios from 'axios'
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 type Props = {
   userString: string,
@@ -17,10 +19,17 @@ type UpdateType = {
     [task: string]: number;  
   },
   day: number,
-  username: string
+  username: string,
+  _id: string
 }
 
 export default function Home( {userString, updatesString}: Props ) {
+  const router = useRouter();
+
+  const redirectToJoin = () => {
+    router.push('/create-account');
+  };
+
   const user = JSON.parse(userString)
   const [noMorePosts, setNoMorePosts] = useState(false)
   const [updates, setUpdates] = useState(JSON.parse(updatesString))
@@ -48,8 +57,8 @@ export default function Home( {userString, updatesString}: Props ) {
         <h1>Hello {user.username}</h1>
         { 
             updates.map((update: UpdateType, index: number) => ( 
-                <div className={styles.update}>
-                    <p><strong>{update.username}</strong></p>
+                <div style={{cursor: "pointer"}}onClick={() => (router.push(`/update/${update._id}`))}className={styles.update}>
+                    <p><strong><Link href={`/user/${update.username}`}>{update.username}</Link></strong></p>
                     <p>Day {update.day}</p>
                     { 
                         Object.keys(update.tasks).map((task: string, index:number) => ( 
@@ -86,12 +95,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         },
       }
     } else {
-      // for (let i = 1; i <= 31; i++) {
-      //   await create_update(user.username, new Date(`2023-09-${String(i)}`), 3, {"chem": i})
-      // }
       const updates = await get_latest_updates()
-      // const after = await get_latest_updates_after(updates[updates.length - 1].created)
-      // console.log(after)
       return {
         props: {
           userString: JSON.stringify(user),

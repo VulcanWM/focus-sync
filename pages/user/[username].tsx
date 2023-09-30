@@ -66,5 +66,5 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
             userString: JSON.stringify(user),
             updatesString: JSON.stringify(updates)
         },
-  }
+    }
 }
