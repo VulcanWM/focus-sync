@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@2toad/profanity": "^2.2.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@types/node": "20.6.2",

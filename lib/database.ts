@@ -1,6 +1,11 @@
 import dbConnect from './mongodb'
 import User from '../models/User'
 import Update from '@/models/Update';
+import { profanity } from '@2toad/profanity';
+
+interface Tasks {
+    [task: string]: number;  
+}
 
 export async function get_user(username: string) {
     await dbConnect();
@@ -41,6 +46,7 @@ export async function create_user(username: string, email: string, goal: string,
     if (username.length > 20){
         return "Your username cannot have more than 20 characters!"
     }
+    goal = profanity.censor(goal)
     if (goal.length < 20){
         return "Your goal must contain at least 20 characters!"
     }
@@ -57,7 +63,7 @@ export async function get_last_update(username: string){
     return last_update
 }
 
-export async function create_update(username: string, date: Date, rating: number, tasks: object){
+export async function create_update(username: string, date: Date, rating: number, tasksOriginal: Tasks){
     const last_update = await get_last_update(username)
     var day: number;
     if (last_update.length == 0){
@@ -71,8 +77,16 @@ export async function create_update(username: string, date: Date, rating: number
         return "Your username does not exist!"
     } 
     const house = user.house;
+    const tasks: Tasks = {}
+    for (const task in tasksOriginal) {
+        if (profanity.censor(task) == task){
+            if (task.length <= 50){
+                tasks[task as string] = tasksOriginal[task]
+            }
+        }
+    }
     if (Object.keys(tasks).length == 0){
-        return "You have to have at least one task!"
+        return "You have to have at least one task (no profanity allowed)!"
     }
     if (Object.keys(tasks).length > 10){
         return "You can add a maximum of 10 tasks!"
