@@ -54,7 +54,7 @@ export async function create_user(username: string, email: string, goal: string,
         return "Your goal cannot contain more than 100 characters!"
     }
     const created = new Date()
-    const user = await User.create({username: username, email: email, goal: goal, house: house, following: [], created: created})
+    const user = await User.create({username: username, email: email, goal: goal, house: house, following: [], created: created, banned: false})
     return true
 }
 

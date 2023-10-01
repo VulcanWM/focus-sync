@@ -23,12 +23,8 @@ type UpdateType = {
   _id: string
 }
 
-export default function Home( {userString, updatesString}: Props ) {
+export default function Dashboard( {userString, updatesString}: Props ) {
   const router = useRouter();
-
-  const redirectToJoin = () => {
-    router.push('/create-account');
-  };
 
   const user = JSON.parse(userString)
   const [noMorePosts, setNoMorePosts] = useState(false)
@@ -57,7 +53,7 @@ export default function Home( {userString, updatesString}: Props ) {
         <h1>Hello {user.username}</h1>
         { 
             updates.map((update: UpdateType, index: number) => ( 
-                <div style={{cursor: "pointer"}}onClick={() => (router.push(`/update/${update._id}`))}className={styles.update}>
+                <div style={{cursor: "pointer"}} onClick={() => (router.push(`/update/${update._id}`))} className={styles.update}>
                     <p><strong><Link href={`/user/${update.username}`}>{update.username}</Link></strong></p>
                     <p>Day {update.day}</p>
                     { 

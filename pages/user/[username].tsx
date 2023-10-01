@@ -2,6 +2,7 @@ import Layout from '../../components/layout'
 import { get_user, get_updates } from '@/lib/database'
 import { GetServerSidePropsContext } from 'next'
 import styles from '@/styles/profile.module.css'
+import { useRouter } from 'next/router';
 
 type Props = {
     userString: string,
@@ -12,10 +13,13 @@ type UpdateType = {
     tasks: {
       [task: string]: number;  
     },
-    day: number
+    day: number,
+    _id: string
 }
 
-export default function Home( { userString, updatesString}:Props ) {
+export default function UserPage( { userString, updatesString}:Props ) {
+  const router = useRouter();
+
   const user = JSON.parse(userString)
   const updates = JSON.parse(updatesString)
   
@@ -29,7 +33,7 @@ export default function Home( { userString, updatesString}:Props ) {
         </div>
         { 
             updates.map((update: UpdateType, index: number) => ( 
-                <div className={styles.update}>
+                <div style={{cursor: "pointer"}} onClick={() => (router.push(`/update/${update._id}`))} className={styles.update}>
                     <p>Day {update.day}</p>
                     { 
                         Object.keys(update.tasks).map((task: string, index:number) => ( 

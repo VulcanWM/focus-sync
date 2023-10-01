@@ -8,13 +8,6 @@ type Props = {
     updateString: string
 };
 
-type UpdateType = {
-    tasks: {
-      [task: string]: number;  
-    },
-    day: number
-}
-
 export default function Home( { updateString}:Props ) {
   const update = JSON.parse(updateString)
   
@@ -22,16 +15,18 @@ export default function Home( { updateString}:Props ) {
     <Layout pageTitle={`${update.username} day ${update.day} update`}>
       <div id="content">
         <h2 className={styles.user_heading}><img className={styles.house} alt={`${update.house} logo`} src={`/${update.house}.png`}/> <Link href={`/user/${update.username}`}>{update.username}</Link> day {update.day}</h2>
-            <div className={styles.update}>
-                { 
-                    Object.keys(update.tasks).map((task: string, index:number) => ( 
-                        <>
-                            <p className={styles.name}>✓ {task}</p>
-                            <p className={`${styles.time} ${styles[update.house]}`}>{update.tasks[task]} mins</p>
-                        </>
-                    ))
-                }
-            </div>
+        <p>{update.date.split("T")[0]}</p>
+        <p>Productivity Rating: <strong>{update.rating as string}</strong></p>
+        <div className={styles.update}>
+            { 
+                Object.keys(update.tasks).map((task: string, index:number) => ( 
+                    <>
+                        <p className={styles.name}>✓ {task}</p>
+                        <p className={`${styles.time} ${styles[update.house]}`}>{update.tasks[task]} mins</p>
+                    </>
+                ))
+            }
+        </div>
       </div>
     </Layout>
   );

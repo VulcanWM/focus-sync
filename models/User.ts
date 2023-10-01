@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, {Schema} from 'mongoose'
 
 const UserSchema = new mongoose.Schema({
   username: String,
@@ -6,7 +6,8 @@ const UserSchema = new mongoose.Schema({
   goal: String,
   following: [String],
   house: String,
-  created: Date
+  created: Date,
+  banned: Schema.Types.Mixed
 })
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);
