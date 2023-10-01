@@ -88,7 +88,7 @@ export default function Update({userString}: Props) {
     }
 
     return (
-        <Layout pageTitle="Home">
+        <Layout pageTitle="Daily Update">
             <div id="content">
                 <h2>Daily Update</h2>
                 <p className={msg=="Only include tasks relevant to your goal"?styles.success:styles.red}>{msg}</p>

@@ -15,7 +15,7 @@ export default function CreateAccount( {email}: Props ) {
   const router = useRouter()
   const { error } = router.query
   return (
-    <Layout pageTitle="Home">
+    <Layout pageTitle="Create Account">
       <div id="content">
         <h2 className={styles.small_title}>create account</h2>
         <p className={styles.error}>{error}</p>

@@ -52,7 +52,7 @@ export default function Home( {userString, updatesString}: Props ) {
 }
 
   return (
-    <Layout pageTitle="Home">
+    <Layout pageTitle="Dashboard">
       <div id="content_notcenter">
         <h1>Hello {user.username}</h1>
         { 
