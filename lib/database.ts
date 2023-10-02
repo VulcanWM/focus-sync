@@ -76,6 +76,9 @@ export async function create_update(username: string, date: Date, rating: number
     if (user == false){
         return "Your username does not exist!"
     } 
+    if (user.banned != false){
+        return `You are banned for reason: ${String(user.banned)}`
+    }
     const house = user.house;
     const tasks: Tasks = {}
     for (const task in tasksOriginal) {
