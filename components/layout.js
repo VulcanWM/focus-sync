@@ -32,7 +32,7 @@ export default function Layout({ pageTitle, children }) {
         <title>{title}</title>
       </Head>
       {['Home', 'Create Account'].includes(pageTitle) == false &&
-        <div className={styles.navbar + " " + styles.sticky} id="navbar">
+        <div className={styles.navbar} id="navbar">
             <Link href="/dashboard">Dashboard</Link>
             <Link href="/update">Daily Update</Link>
             {/* <Link href="/stats">Stats</Link> */}

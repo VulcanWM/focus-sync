@@ -1,9 +1,10 @@
 .navbar {
     text-align: center;
     overflow: hidden;
-    /* border-bottom: 1px solid white; */
-    position: sticky;
+    position: fixed;
     top: 0;
+    width: 100%;
+    /* border-bottom: 1px solid white; */
 }
   
 .navbar a {
@@ -20,14 +21,8 @@
 .navbar a:hover {
     opacity: 0.5;
 }
-
-.sticky {
-    position: fixed;
-    top: 0;
-    width: 100%;
-}
   
-.sticky + .content {
+.navbar + .content {
     padding-top: 60px;
 }
   
