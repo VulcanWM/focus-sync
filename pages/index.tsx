@@ -10,7 +10,7 @@ export default function Home() {
   };
   return (
     <Layout pageTitle="Home">
-      <div id="content">
+      <div id="middle">
         <h1 className={styles.title}>FocusSync</h1>
         <ul>
           <li className={styles.point}>Be accountable: Join a group for days of focus, motivation and discipline.</li>

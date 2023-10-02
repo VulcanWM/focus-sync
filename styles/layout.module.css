@@ -20,3 +20,18 @@
 .navbar a:hover {
     opacity: 0.5;
 }
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+  
+.sticky + .content {
+    padding-top: 60px;
+}
+  
+.content {
+    padding: 16px;
+}
+  
