@@ -2,6 +2,7 @@ import dbConnect from './mongodb'
 import User from '../models/User'
 import Update from '@/models/Update';
 import { profanity } from '@2toad/profanity';
+import {admins} from '../lib/admins'
 
 interface Tasks {
     [task: string]: number;  
@@ -137,4 +138,28 @@ export async function get_update(id: string){
     } else {
         return updates[0]
     }
+}
+
+export async function ban_user(username: string, admin: string, reason: string){
+    if (admins.includes(admin) == false){
+        return "You are not an admin!"
+    }
+    const user = await get_user(username)
+    if (user.banned != false){
+        return `${username} is already banned!`
+    }
+    await User.findOneAndUpdate({username: username}, {banned: reason});
+    return true
+}
+
+export async function unban_user(username: string, admin: string){
+    if (admins.includes(admin) == false){
+        return "You are not an admin!"
+    }
+    const user = await get_user(username)
+    if (user.banned == false){
+        return `${username} is not banned!`
+    }
+    await User.findOneAndUpdate({username: username}, {banned: false});
+    return true
 }

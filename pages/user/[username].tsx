@@ -1,8 +1,11 @@
 import Layout from '../../components/layout'
-import { get_user, get_updates } from '@/lib/database'
+import { get_user, get_updates, get_user_from_email } from '@/lib/database'
+import { getServerSession } from "next-auth/next"
+import { authOptions } from '../api/auth/[...nextauth]'
 import { GetServerSidePropsContext } from 'next'
 import styles from '@/styles/profile.module.css'
 import { useRouter } from 'next/router';
+import { admins } from '@/lib/admins'
 
 type Props = {
     userString: string,
@@ -52,6 +55,21 @@ export default function UserPage( { userString, updatesString}:Props ) {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
+    const session = await getServerSession(
+        context.req,
+        context.res,
+        authOptions
+    )
+    var your_username = "";
+    if (session){
+        const email = session!.user!.email as string;
+        const your_user = await get_user_from_email(email)
+        if (your_user != false){
+            your_username = your_user.username;
+        }
+    }
+    const admin = admins.includes(your_username)
+
     const username = (context!.params!.username as string).toLowerCase()
     const user = await get_user(username)
 
