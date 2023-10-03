@@ -64,14 +64,6 @@ export async function get_last_update(username: string){
 }
 
 export async function create_update(username: string, date: Date, rating: number, tasksOriginal: Tasks){
-    const last_update = await get_last_update(username)
-    var day: number;
-    if (last_update.length == 0){
-        day = 1
-    } else {
-        day = last_update[0].day + 1
-    }
-    const update_id: string = username + ":" + day.toString()
     const user = await get_user(username)
     if (user == false){
         return "Your username does not exist!"
@@ -79,6 +71,20 @@ export async function create_update(username: string, date: Date, rating: number
     if (user.banned != false){
         return `You are banned for reason: ${String(user.banned)}`
     }
+    const created = new Date()
+    const last_update = await get_last_update(username)
+    var day: number;
+    if (last_update.length == 0){
+        const account_created: Date = user.created;
+        account_created.setDate(account_created.getDate() - 2);
+        if (account_created > created){
+            return "You can only submit updates for dates after account creation!"
+        }
+        day = 1
+    } else {
+        day = last_update[0].day + 1
+    }
+    const update_id: string = username + ":" + day.toString()
     const house = user.house;
     const tasks: Tasks = {}
     for (const task in tasksOriginal) {
@@ -105,7 +111,6 @@ export async function create_update(username: string, date: Date, rating: number
             return "You have to submit an update after your last update's date!"
         }
     }
-    const created = new Date()
     const update = await Update.create({_id: update_id, username: username, house: house, date: date, rating: rating, tasks: tasks, day: day, created: created})
     return true
 }
