@@ -9,7 +9,8 @@ import { admins } from '@/lib/admins'
 
 type Props = {
     userString: string,
-    updatesString: string
+    updatesString: string,
+    admin: boolean
 };
 
 type UpdateType = {
@@ -20,36 +21,45 @@ type UpdateType = {
     _id: string
 }
 
-export default function UserPage( { userString, updatesString}:Props ) {
+export default function UserPage( { userString, updatesString, admin}:Props ) {
   const router = useRouter();
 
   const user = JSON.parse(userString)
   const updates = JSON.parse(updatesString)
-  
   return (
     <Layout pageTitle={`${user.username}'s profile`}>
-      <div id="content">
-        <h2 className={styles.user_heading}><img className={styles.house} alt={`${user.house} logo`} src={`/${user.house}.png`}/> {user.username}</h2>
-        <div className={styles.goal}>
-            <h3>Goal:</h3>
-            <p>{user.goal}</p>
-        </div>
-        { 
-            updates.map((update: UpdateType, index: number) => ( 
-                <div style={{cursor: "pointer"}} onClick={() => (router.push(`/update/${update._id}`))} className={styles.update}>
-                    <p>Day {update.day}</p>
+        <div id="content">
+            <h2 className={styles.user_heading}><img className={styles.house} alt={`${user.house} logo`} src={`/${user.house}.png`}/> {user.username}</h2>
+            {user.banned == false ? 
+                <>
+                    {admin && <button onClick={() => (router.push(`/api/ban-user?username=${user.username}&reason=for going against the rules`))}>ban user</button>}
+                    <div className={styles.goal}>
+                        <h3>Goal:</h3>
+                        <p>{user.goal}</p>
+                    </div>
                     { 
-                        Object.keys(update.tasks).map((task: string, index:number) => ( 
-                            <>
-                                <p className={styles.name}>✓ {task}</p>
-                                <p className={`${styles.time} ${styles[user.house]}`}>{update.tasks[task]} mins</p>
-                            </>
+                        updates.map((update: UpdateType, indexUpdate: number) => ( 
+                            <div key={indexUpdate} style={{cursor: "pointer"}} onClick={() => (router.push(`/update/${update._id}`))} className={styles.update}>
+                                <p>Day {update.day}</p>
+                                { 
+                                    Object.keys(update.tasks).map((task: string, indexTask:number) => ( 
+                                        <div key={indexUpdate + ":" + indexTask}>
+                                            <p className={styles.name}>✓ {task}</p>
+                                            <p className={`${styles.time} ${styles[user.house]}`}>{update.tasks[task]} mins</p>
+                                        </div>
+                                    ))
+                                }
+                            </div>
                         ))
                     }
-                </div>
-            ))
-        }
-      </div>
+                </>
+            : 
+                <>
+                    <p>{user.username} is banned <strong>{user.banned}</strong>!</p>
+                    {admin && <button onClick={() => (router.push(`/api/unban-user?username=${user.username}`))}>unban user</button>}
+                </>
+            }
+        </div>
     </Layout>
   );
 }
@@ -86,7 +96,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return {
         props: {
             userString: JSON.stringify(user),
-            updatesString: JSON.stringify(updates)
+            updatesString: JSON.stringify(updates),
+            admin: admin
         },
     }
 }

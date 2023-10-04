@@ -2,7 +2,7 @@ import Layout from '@/components/layout';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./api/auth/[...nextauth]"
 import { GetServerSidePropsContext } from 'next'
-import { get_user_from_email, get_latest_updates, unban_user } from '@/lib/database';
+import { get_user_from_email, get_latest_updates } from '@/lib/database';
 import styles from '@/styles/dashboard.module.css'
 import { useState } from 'react'
 import axios from 'axios'
@@ -92,7 +92,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       }
     } else {
       const updates = await get_latest_updates()
-      // await unban_user("vulcanwm", "vulcanwm")
       return {
         props: {
           userString: JSON.stringify(user),

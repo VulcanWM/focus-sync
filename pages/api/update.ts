@@ -8,6 +8,10 @@ type Data = {
   error: boolean
 }
 
+interface Tasks {
+  [task: string]: number;  
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
@@ -15,7 +19,7 @@ export default async function handler(
   const session = await getServerSession(req, res, authOptions)
   if (session) {
     const rating = req.body.rating as number;
-    const tasks = req.body.tasks as object;
+    const tasks: Tasks = req.body.tasks;
     const dateString = String(req.body.date);
     const date = new Date(dateString)
     const user = await get_user_from_email(session!.user!.email as string);
