@@ -60,8 +60,9 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     context.res,
     authOptions
   )
+  var email: any = false;
   if (session){
-    const email = session!.user!.email as string;
+    email = session!.user!.email as string;
     if (await get_user_from_email(email) != false){
       return {
         redirect: {
@@ -71,7 +72,6 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       }
     }
   } 
-  const email = session!.user!.email as string
   return {
     props: {
       email: email

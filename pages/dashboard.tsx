@@ -52,16 +52,16 @@ export default function Dashboard( {userString, updatesString}: Props ) {
       <div id="content_notcenter">
         <h1>Hello {user.username}</h1>
         { 
-            updates.map((update: UpdateType, index: number) => ( 
-                <div style={{cursor: "pointer"}} onClick={() => (router.push(`/update/${update._id}`))} className={styles.update}>
+            updates.map((update: UpdateType, indexUpdate: number) => ( 
+                <div key={indexUpdate} style={{cursor: "pointer"}} onClick={() => (router.push(`/update/${update._id}`))} className={styles.update}>
                     <p><strong><Link href={`/user/${update.username}`}>{update.username}</Link></strong></p>
                     <p>Day {update.day}</p>
                     { 
-                        Object.keys(update.tasks).map((task: string, index:number) => ( 
-                            <>
+                        Object.keys(update.tasks).map((task: string, indexTask:number) => ( 
+                            <div key={indexUpdate + " " + indexTask}>
                                 <p className={styles.name}>✓ {task}</p>
                                 <p className={`${styles.time} ${styles[user.house]}`}>{update.tasks[task]} mins</p>
-                            </>
+                            </div>
                         ))
                     }
                 </div>
