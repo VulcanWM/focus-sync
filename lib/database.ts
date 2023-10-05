@@ -163,3 +163,12 @@ export async function unban_user(username: string, admin: string){
     await User.findOneAndUpdate({username: username}, {banned: false});
     return true
 }
+
+export async function delete_update(update_id: string, admin: string){
+    if (admins.includes(admin)){
+        await Update.deleteOne({_id: update_id})
+        return true
+    } else {
+        return "You are not an admin!"
+    }
+}

@@ -12,11 +12,11 @@ export default function Layout({ pageTitle, children }) {
         <link rel="shortcut icon" href="/favicon.ico" />
         <meta
           name="description"
-          content=""
+          content="community based productivity challenge"
         />
         <meta
           name="og:description"
-          content=""
+          content="community based productivity challenge"
         />
         <meta
           property="og:image"
