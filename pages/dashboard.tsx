@@ -6,7 +6,6 @@ import { get_user_from_email, get_latest_updates } from '@/lib/database';
 import styles from '@/styles/dashboard.module.css'
 import { useState } from 'react'
 import axios from 'axios'
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { admins } from '@/lib/admins';
 
@@ -27,8 +26,6 @@ type UpdateType = {
 }
 
 export default function Dashboard( {userString, updatesString, admin}: Props ) {
-  const router = useRouter();
-
   const user = JSON.parse(userString)
   const [noMorePosts, setNoMorePosts] = useState(false)
   const [updates, setUpdates] = useState<UpdateType[]>(JSON.parse(updatesString))
@@ -62,7 +59,6 @@ export default function Dashboard( {userString, updatesString, admin}: Props ) {
             console.log("error")
         }
     });
-    
   }
 
   return (

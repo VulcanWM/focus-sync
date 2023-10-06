@@ -6,6 +6,9 @@ import { GetServerSidePropsContext } from 'next'
 import styles from '@/styles/profile.module.css'
 import { useRouter } from 'next/router';
 import { admins } from '@/lib/admins'
+import Link from 'next/link'
+import { useState } from 'react'
+import axios from 'axios'
 
 type Props = {
     userString: string,
@@ -25,7 +28,22 @@ export default function UserPage( { userString, updatesString, admin}:Props ) {
   const router = useRouter();
 
   const user = JSON.parse(userString)
-  const updates = JSON.parse(updatesString)
+  const [updates, setUpdates] = useState<UpdateType[]>(JSON.parse(updatesString))
+
+  async function deleteUpdate(update_id: string){
+    const updateData = {
+      update_id: update_id
+    }
+    axios.post(`http://localhost:3000/api/delete-update`, updateData).then((response) => {
+        if (response.data.error == false){
+            const filteredUpdates = updates.filter(update => update._id !== update_id);
+            setUpdates(filteredUpdates);
+        } else {
+            console.log("error")
+        }
+    });
+  }
+  
   return (
     <Layout pageTitle={`${user.username}'s profile`}>
         <div id="content">
@@ -39,8 +57,8 @@ export default function UserPage( { userString, updatesString, admin}:Props ) {
                     </div>
                     { 
                         updates.map((update: UpdateType, indexUpdate: number) => ( 
-                            <div key={indexUpdate} style={{cursor: "pointer"}} onClick={() => (router.push(`/update/${update._id}`))} className={styles.update}>
-                                <p>Day {update.day}</p>
+                            <div key={indexUpdate} className={styles.update}>
+                                <p><Link href={`/update/${update._id}`}>Day {update.day}</Link>{admin&&<button onClick={() => (deleteUpdate(update._id))}>delete update</button>}</p>
                                 { 
                                     Object.keys(update.tasks).map((task: string, indexTask:number) => ( 
                                         <div key={indexUpdate + ":" + indexTask}>
