@@ -34,6 +34,7 @@ export default function Update({userString}: Props) {
         if (Object.keys(tasks).includes(taskName)){setMsg("This task already exists");return}
         if (Object.keys(tasks).length == 10){setMsg("You can add a maximum of 10 tasks");return}
         if (taskTime<=0){setMsg("The task time has to be greater than 0");return}
+        if (taskName.length>50){setMsg("Your task can only have 50 characters or less");return}
         setTasks(tasks => ({
             ...tasks,
             ...{[taskName]: taskTime}

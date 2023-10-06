@@ -64,8 +64,6 @@ export default function Dashboard( {userString, updatesString, admin}: Props ) {
     });
     
   }
-  
-  // onClick={() => (router.push(`/update/${update._id}`))}
 
   return (
     <Layout pageTitle="Dashboard">
