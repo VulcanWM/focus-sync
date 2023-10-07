@@ -1,1 +1,1 @@
-export const admins = ['vulcanwm']
+export const admins = ['vulcanwm', 'drip_too_hard']
