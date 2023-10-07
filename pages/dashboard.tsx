@@ -34,7 +34,7 @@ export default function Dashboard( {userString, updatesString, admin}: Props ) {
     const userData = {
         created: updates[updates.length - 1].created
     }
-    axios.post(`http://localhost:3000/api/next-updates`, userData).then((response) => {
+    axios.post(`/api/next-updates`, userData).then((response) => {
         if (response.data.error == false){
             if (response.data.data.length == 0){
               setNoMorePosts(true)
@@ -51,7 +51,7 @@ export default function Dashboard( {userString, updatesString, admin}: Props ) {
     const updateData = {
       update_id: update_id
     }
-    axios.post(`http://localhost:3000/api/delete-update`, updateData).then((response) => {
+    axios.post(`/api/delete-update`, updateData).then((response) => {
         if (response.data.error == false){
             const filteredUpdates = updates.filter(update => update._id !== update_id);
             setUpdates(filteredUpdates);

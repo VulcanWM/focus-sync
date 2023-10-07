@@ -34,7 +34,7 @@ export default function UserPage( { userString, updatesString, admin}:Props ) {
     const updateData = {
       update_id: update_id
     }
-    axios.post(`http://localhost:3000/api/delete-update`, updateData).then((response) => {
+    axios.post(`/api/delete-update`, updateData).then((response) => {
         if (response.data.error == false){
             const filteredUpdates = updates.filter(update => update._id !== update_id);
             setUpdates(filteredUpdates);

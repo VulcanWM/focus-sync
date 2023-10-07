@@ -22,7 +22,7 @@ export default function Home( { updateString, admin}:Props ) {
     const updateData = {
       update_id: update_id
     }
-    axios.post(`http://localhost:3000/api/delete-update`, updateData).then((response) => {
+    axios.post(`/api/delete-update`, updateData).then((response) => {
         if (response.data.error == false){
             router.push(`/user/${update.username}`)
         } else {

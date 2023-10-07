@@ -79,7 +79,7 @@ export default function Update({userString}: Props) {
             rating: rating,
             date: date
         }
-        axios.post(`http://localhost:3000/api/update`, userData).then((response) => {
+        axios.post(`/api/update`, userData).then((response) => {
             if (response.data.error == false){
                 router.push(`/user/${user.username}`);
             } else {
