@@ -31,6 +31,7 @@ export async function get_user_from_email(email: string) {
 export async function create_user(username: string, email: string, goal: string, house: string) {
     await dbConnect();
     username = username.toLowerCase();
+    username = username.replaceAll(" ", "_")
     if (username.includes(":")){
         return "You cannot have : in your username!"
     }
