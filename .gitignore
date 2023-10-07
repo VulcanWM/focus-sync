@@ -26,7 +26,7 @@ yarn-error.log*
 
 # local env files
 .env
-.env.netlify
+.env.vercel
 
 # vercel
 .vercel
