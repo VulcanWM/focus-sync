@@ -1,13 +1,14 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/layout.module.css'
+import Script from 'next/script';
 
 const siteTitle = "FocusSync";
 
 export default function Layout({ pageTitle, children }) {
   const title = `${siteTitle} - ${pageTitle}`;
   return (
-    <div>
+    <>
       <Head>
         <link rel="shortcut icon" href="/favicon.ico" />
         <meta
@@ -41,6 +42,16 @@ export default function Layout({ pageTitle, children }) {
       <div className={styles.content}>
         <main>{children}</main>
       </div>
-    </div>
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-LWYYY8S2HJ" />
+      <Script id="google-analytics">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-LWYYY8S2HJ');
+        `}
+      </Script>
+    </>
   );
 }
