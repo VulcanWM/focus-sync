@@ -22,7 +22,8 @@ type UpdateType = {
   day: number,
   username: string,
   _id: string,
-  created: Date
+  created: Date,
+  house: string
 }
 
 export default function Dashboard( {userString, updatesString, admin}: Props ) {
@@ -75,7 +76,7 @@ export default function Dashboard( {userString, updatesString, admin}: Props ) {
                         Object.keys(update.tasks).map((task: string, indexTask:number) => ( 
                             <div key={indexUpdate + " " + indexTask}>
                                 <p className={styles.name}>✓ {task}</p>
-                                <p className={`${styles.time} ${styles[user.house]}`}>{update.tasks[task]} mins</p>
+                                <p className={`${styles.time} ${styles[update.house]}`}>{update.tasks[task]} mins</p>
                             </div>
                         ))
                     }
