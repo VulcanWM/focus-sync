@@ -30,6 +30,7 @@ export default function Layout({ pageTitle, children }) {
         <meta name="robots" content="index, follow"/>
         <meta property="og:type" content="" />
         <meta name="keywords" content=""/>
+        <meta name="google-site-verification" content="d3cd3FIDhsMDI3e_zwDnkg4GLGdu-cJu23VVpa-eC6o" />
         <title>{title}</title>
       </Head>
       {['Home', 'Create Account'].includes(pageTitle) == false &&
