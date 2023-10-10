@@ -11,25 +11,19 @@ export default function Layout({ pageTitle, children }) {
     <>
       <Head>
         <link rel="shortcut icon" href="/favicon.ico" />
-        <meta
-          name="description"
-          content="community based productivity challenge"
-        />
-        <meta
-          name="og:description"
-          content="community based productivity challenge"
-        />
+        <meta name="description" content="Community driven productivity website that helps users achieve their goals in a social and fun way. Set goals, track task time, and stay motivated by seeing how others are performing."/>
+        <meta name="keywords" content="productivity,goals,tasks,task management,time tracking,motivation,accountability,social productivity,focus,focussync,focus sync"/>
+        <meta name="og:description" content="Community driven productivity website that helps users achieve their goals in a social and fun way. Set goals, track task time, and stay motivated by seeing how others are performing."/>
         <meta
           property="og:image"
           content="/logo.png"
         />
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta property="og:url" content="" />
+        <meta property="og:url" content="https://focus-sync.vercel.app" />
         <meta property="og:site_name" content={siteTitle} />
         <meta name="robots" content="index, follow"/>
-        <meta property="og:type" content="" />
-        <meta name="keywords" content=""/>
+        <meta property="og:type" content="Website" />
         <meta name="google-site-verification" content="d3cd3FIDhsMDI3e_zwDnkg4GLGdu-cJu23VVpa-eC6o" />
         <title>{title}</title>
       </Head>
