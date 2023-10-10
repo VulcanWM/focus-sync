@@ -1,0 +1,49 @@
+.calendar {
+    display: grid;
+    grid-template-columns: 36px 36px 36px 36px 36px 36px 36px;
+    background-color: transparent;
+    column-gap: 18px;
+    row-gap: 18px;
+}
+.day {
+    height: 36px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.date {
+    width: 30.375px;
+    height: 30.275px;
+    border-radius: 50%;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 5.625px rgba(255, 255, 255, 0.7) solid;
+}
+
+/* .score0 {
+    border: 5.625px rgba(255, 255, 255, 0.7) solid;
+} */
+
+.score1 {
+    border: 5.625px rgba(0, 255, 26, 0.2) solid;
+}
+
+.score2 {
+    border: 5.625px rgba(0, 255, 26, 0.4) solid;
+}
+
+.score3 {
+    border: 5.625px rgba(0, 255, 26, 0.6) solid;
+}
+
+.score4 {
+    border: 5.625px rgba(0, 255, 26, 0.8) solid;
+}
+
+.score5 {
+    border: 5.625px rgba(0, 255, 26, 1) solid;
+}

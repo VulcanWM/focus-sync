@@ -36,7 +36,7 @@ export default function Layout({ pageTitle, children }) {
         <div className={styles.navbar} id="navbar">
             <Link href="/dashboard">Dashboard</Link>
             <Link href="/update">Daily Update</Link>
-            {/* <Link href="/stats">Stats</Link> */}
+            <Link href="/stats">Stats</Link>
         </div>
       }
       <div className={styles.content}>
