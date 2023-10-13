@@ -1,6 +1,7 @@
 import styles from '@/styles/index.module.css'
 import { useRouter } from 'next/router';
 import Layout from '@/components/layout';
+import { useState, useEffect } from 'react';
 
 interface IDot {
   top: string;
@@ -15,26 +16,37 @@ export default function Home() {
     router.push('/create-account');
   };
 
-  const dots: IDot[] = [...Array(25)].map(() => ({
+  const [dots, setDots] = useState<IDot[]>([...Array(20)].map(() => ({
     top: Math.random() * 100 + '%',
     left: Math.random() * 100 + '%',
-    width: (Math.random() * 10 + 5) + 'px'  
-  }))
+    width: (Math.random() * 10 + 5) + 'px'
+   })));
 
   const dotElements = dots.map((dot, i) => {   
     return (
       <div   
-        key={i}      
-        className={styles.dot}      
+        key={i}       
+        className={styles.dot}     
         style={{    
-          top: dot.top,     
-          left: dot.left,     
+          top: dot.top,      
+          left: dot.left,      
           width: dot.width,
           height: dot.width    
-        }}    
+        }}   
       />    
     )    
-  })
+   })
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDots([...Array(20)].map(() => ({      
+        top: Math.random() * 100 + '%',
+        left: Math.random() * 100 + '%',
+        width: (Math.random() * 10 + 5) + 'px'
+      })));
+    }, 3000);  
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Layout pageTitle="Home">
