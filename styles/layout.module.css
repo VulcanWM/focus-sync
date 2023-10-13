@@ -4,7 +4,7 @@
     position: fixed;
     top: 0;
     width: 100%;
-    /* border-bottom: 1px solid white; */
+    border-bottom: 1px dashed rgb(73, 72, 72);
 }
   
 .navbar a {
@@ -30,3 +30,29 @@
     padding: 16px;
 }
   
+.other_navbar {
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    border-bottom: 1px dashed rgb(73, 72, 72);
+}
+  
+.other_navbar span {
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: lowercase;
+    color: white;
+    margin: 0px 5px;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+}
+  
+.other_navbar + .content {
+    padding-top: 60px;
+}
+
+.img {
+    vertical-align: middle;
+}

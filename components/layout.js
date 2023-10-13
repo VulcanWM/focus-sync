@@ -2,6 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/layout.module.css'
 import Script from 'next/script';
+import Image from 'next/image'
 
 const siteTitle = "FocusSync";
 
@@ -27,11 +28,15 @@ export default function Layout({ pageTitle, children }) {
         <meta name="google-site-verification" content="d3cd3FIDhsMDI3e_zwDnkg4GLGdu-cJu23VVpa-eC6o" />
         <title>{title}</title>
       </Head>
-      {['Home', 'Create Account'].includes(pageTitle) == false &&
+      {['Home', 'Create Account'].includes(pageTitle) == false ?
         <div className={styles.navbar} id="navbar">
             <Link href="/dashboard">Dashboard</Link>
             <Link href="/update">Daily Update</Link>
             <Link href="/stats">Stats</Link>
+        </div>
+      : <div className={styles.other_navbar} id="navbar">
+            <Image className={styles.img} src="/logo.png" width={40} height={40} alt="Logo"></Image>
+            <span>focussync</span>
         </div>
       }
       <div className={styles.content}>

@@ -23,7 +23,7 @@ export default function CreateAccount( {email}: Props ) {
           <form action="/api/create-account" method='POST'>
             <p className={styles.email}>{email}</p>
             <input maxLength={20} autoComplete="off" placeholder="username" className={styles.signup_input} name="username" required></input><br/>
-            <textarea minLength={20} maxLength={100} className={styles.signup_textarea} defaultValue="your goal..." name="goal" required></textarea><br/><br/>
+            <textarea minLength={20} maxLength={100} className={styles.signup_textarea} placeholder="your goal..." name="goal" required></textarea><br/><br/>
             <ul className={styles.houses}>
               <li className={styles.verdant}>
                 <input type="radio" id="verdant" name="house" value="verdant" required/>

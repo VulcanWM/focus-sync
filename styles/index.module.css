@@ -26,7 +26,12 @@
   color: #c1bebe;
   font-size: 1.3rem;
   font-weight: bold;
+  text-align: left;
 }
+
+/* .caption {
+  font-size: 1.3rem;
+} */
 
 @media (max-width:500px) {
   .title {
@@ -44,4 +49,10 @@
   .point {
     font-size: 1rem;
   }
+}
+
+.dot {
+  position: fixed;
+  background: rgb(115, 115, 115);
+  border-radius: 50%;
 }
