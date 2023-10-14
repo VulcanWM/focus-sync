@@ -31,7 +31,7 @@ export default function Home() {
           top: dot.top,      
           left: dot.left,      
           width: dot.width,
-          height: dot.width    
+          height: dot.width
         }}   
       />    
     )    
@@ -44,7 +44,7 @@ export default function Home() {
         left: Math.random() * 100 + '%',
         width: (Math.random() * 10 + 5) + 'px'
       })));
-    }, 3000);  
+    }, 4000);  
     return () => clearInterval(interval);
   }, []);
 
