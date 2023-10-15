@@ -46,31 +46,39 @@ function getMonths(firstMonth: string, firstYear: number, lastMonth: string, las
 export default function Home( { userString, updatesString}:Props ) {
   const user = JSON.parse(userString)
   const updates = JSON.parse(updatesString)
-  const lastMonth = Object.keys(months)[new Date(updates[0].date).getMonth()]
-  const lastYear = new Date(updates[0].date).getFullYear()
-  const firstMonth = Object.keys(months)[new Date(updates[updates.length - 1].date).getMonth()]
-  const firstYear = new Date(updates[updates.length - 1].date).getFullYear()
-  const allMonths = getMonths(firstMonth, firstYear, lastMonth, lastYear)
 
   const scores: StringNumberDictType = {}
   const taskNumbers: StringNumberDictType = {}
   const dayNumbers: StringNumberDictType = {}
-  for (let update of updates){
-    let year = String(update.date).split("-")[0]
-    let month = Object.keys(months)[parseInt(String(update.date).split("-")[1]) - 1]
-    let day = String(update.date).split("-")[2].split("T")[0]
-    if (day.startsWith("0")){
-        day = day.substring(1)
+  var allMonths: string[] = []
+
+  if (updates.length > 0){
+    const lastMonth = Object.keys(months)[new Date(updates[0].date).getMonth()]
+    const lastYear = new Date(updates[0].date).getFullYear()
+    const firstMonth = Object.keys(months)[new Date(updates[updates.length - 1].date).getMonth()]
+    const firstYear = new Date(updates[updates.length - 1].date).getFullYear()
+    allMonths = getMonths(firstMonth, firstYear, lastMonth, lastYear)
+
+    for (let update of updates){
+        let year = String(update.date).split("-")[0]
+        let month = Object.keys(months)[parseInt(String(update.date).split("-")[1]) - 1]
+        let day = String(update.date).split("-")[2].split("T")[0]
+        if (day.startsWith("0")){
+            day = day.substring(1)
+        }
+        scores[`${day} ${month} ${year}`] = update.rating;
+        taskNumbers[`${day} ${month} ${year}`] = Object.keys(update.tasks).length;
+        dayNumbers[`${day} ${month} ${year}`] = update.day
     }
-    scores[`${day} ${month} ${year}`] = update.rating;
-    taskNumbers[`${day} ${month} ${year}`] = Object.keys(update.tasks).length;
-    dayNumbers[`${day} ${month} ${year}`] = update.day
   }
   
   return (
     <Layout pageTitle={`User Stats`}>
       <div id="content">
         <h1>Your User Stats</h1>
+        {allMonths.length == 0 &&
+            <p>Submit an update to see your stats page come to life!</p>
+        }
         {
             allMonths.map((monthYear: string, index: number) => ( 
                 <>
