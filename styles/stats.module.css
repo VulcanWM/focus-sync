@@ -5,6 +5,7 @@
     column-gap: 18px;
     row-gap: 18px;
 }
+
 .day {
     height: 36px;
     text-align: center;
@@ -24,9 +25,26 @@
     border: 5.625px rgba(255, 255, 255, 0.7) solid;
 }
 
-/* .score0 {
-    border: 5.625px rgba(255, 255, 255, 0.7) solid;
-} */
+.noLinkStyling {
+    text-decoration: none;
+}
+
+.date .taskNumber {
+    margin-bottom: 70px;
+    visibility: hidden;
+    width: 50px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    border: 1px dashed rgb(73, 72, 72);
+}
+  
+.date:hover .taskNumber {
+    visibility: visible;
+}
 
 .score1 {
     border: 5.625px rgba(0, 255, 26, 0.2) solid;

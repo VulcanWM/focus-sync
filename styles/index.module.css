@@ -4,6 +4,7 @@
   background: white;
   color: black;
   border: none;
+  margin-top: 1rem;
 }
 
 .join_button:hover {
@@ -27,6 +28,7 @@
   font-size: 1.3rem;
   font-weight: bold;
   text-align: left;
+  margin-bottom: 1rem;
 }
 
 /* .caption {

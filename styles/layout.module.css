@@ -5,6 +5,7 @@
     top: 0;
     width: 100%;
     border-bottom: 1px dashed rgb(73, 72, 72);
+    background-color: #121212;
 }
   
 .navbar a {
@@ -36,6 +37,7 @@
     top: 0;
     width: 100%;
     border-bottom: 1px dashed rgb(73, 72, 72);
+    background-color: #121212;
 }
   
 .other_navbar span {

@@ -4,6 +4,7 @@ import { GetServerSidePropsContext } from 'next'
 import { authOptions } from './api/auth/[...nextauth]'
 import { getServerSession } from "next-auth/next"
 import styles from '@/styles/stats.module.css'
+import Link from 'next/link'
 
 type Props = {
     userString: string,
@@ -14,7 +15,7 @@ type MonthsType = {
     [key: string]: number; 
 }
 
-type ScoresType = {
+type StringNumberDictType = {
     [key: string]: number
 }
 
@@ -51,7 +52,9 @@ export default function Home( { userString, updatesString}:Props ) {
   const firstYear = new Date(updates[updates.length - 1].date).getFullYear()
   const allMonths = getMonths(firstMonth, firstYear, lastMonth, lastYear)
 
-  const scores: ScoresType = {}
+  const scores: StringNumberDictType = {}
+  const taskNumbers: StringNumberDictType = {}
+  const dayNumbers: StringNumberDictType = {}
   for (let update of updates){
     let year = String(update.date).split("-")[0]
     let month = Object.keys(months)[parseInt(String(update.date).split("-")[1]) - 1]
@@ -60,6 +63,8 @@ export default function Home( { userString, updatesString}:Props ) {
         day = day.substring(1)
     }
     scores[`${day} ${month} ${year}`] = update.rating;
+    taskNumbers[`${day} ${month} ${year}`] = Object.keys(update.tasks).length;
+    dayNumbers[`${day} ${month} ${year}`] = update.day
   }
   
   return (
@@ -84,7 +89,10 @@ export default function Home( { userString, updatesString}:Props ) {
                         }
                         {
                             Array.from(Array(31).keys()).map((index: number) => ( 
-                                <div className={styles.date + " " + styles["score" + scores[String(index + 1) + " " + monthYear]]}>{index + 1}</div>
+                                <div className={styles.date + " " + styles["score" + scores[String(index + 1) + " " + monthYear]]}>
+                                    <Link className={styles.noLinkStyling} href={`/update/${user.username}:${dayNumbers[String(index + 1) + " " + monthYear]}`}>{index + 1}</Link>
+                                    <span className={styles.taskNumber}>{taskNumbers[String(index + 1) + " " + monthYear] || 0}</span>
+                                </div>
                             ))
                         }
                     </div>
