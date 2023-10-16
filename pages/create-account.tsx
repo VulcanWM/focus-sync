@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "./api/auth/[...nextauth]"
 import { GetServerSidePropsContext } from 'next'
 import { get_user_from_email } from '@/lib/database';
+import Link from 'next/link';
 
 type Props = {
   email: string;
@@ -24,6 +25,8 @@ export default function CreateAccount( {email}: Props ) {
             <p className={styles.email}>{email}</p>
             <input maxLength={20} autoComplete="off" placeholder="username" className={styles.signup_input} name="username" required></input><br/>
             <textarea minLength={20} maxLength={100} className={styles.signup_textarea} placeholder="your goal..." name="goal" required></textarea><br/><br/>
+            <p>Houses</p>
+            <p className={styles.moreInfo}>Find out more about them on the <Link href="/houses">houses page</Link></p>
             <ul className={styles.houses}>
               <li className={styles.verdant}>
                 <input type="radio" id="verdant" name="house" value="verdant" required/>

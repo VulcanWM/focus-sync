@@ -108,6 +108,8 @@ export default function Home( { userString, updatesString}:Props ) {
                 
             ))
         }
+        {/* <h2>Badges</h2> */}
+        
       </div>
     </Layout>
   );

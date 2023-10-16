@@ -1,0 +1,65 @@
+.title {
+    text-align: center;
+}
+
+.houses {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.house {
+    border: 1px dashed white;
+    width: 22rem;
+    height: 12.5rem;
+    margin: 10px;
+    border-radius: 10px;
+    text-align: center;
+    background-size: cover;
+}
+
+.verdant {
+    border: 1px dashed #55F50A;
+    color: #55F50A;
+    background-image: url('/desktopWallpapers/verdant.png');
+}
+
+.erythro {
+    border: 1px dashed #ff0000;
+    color: #ff0000;
+    background-image: url('/desktopWallpapers/erythro.png');
+}
+
+.lumos {
+    border: 1px dashed #FFC700;
+    color: #FFC700;
+    background-image: url('/desktopWallpapers/lumos.png');
+}
+
+.azurite {
+    border: 1px dashed #25B1FF;
+    color: #25B1FF;
+    background-image: url('/desktopWallpapers/azurite.png');
+}
+
+.house h2 {
+    background-color: #121212;
+    display: inline-block;
+    padding: 5px;
+    margin-bottom: 50px;
+    border-radius: 10px;
+
+}
+  
+.house span{
+    background-color: #121212;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.house {
+    background-color: #121212;
+}

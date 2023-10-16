@@ -28,7 +28,7 @@ export default function Layout({ pageTitle, children }) {
         <meta name="google-site-verification" content="d3cd3FIDhsMDI3e_zwDnkg4GLGdu-cJu23VVpa-eC6o" />
         <title>{title}</title>
       </Head>
-      {['Home', 'Create Account'].includes(pageTitle) == false ?
+      {['Home', 'Create Account', 'Houses'].includes(pageTitle) == false ?
         <div className={styles.navbar} id="navbar">
             <Link href="/dashboard">Dashboard</Link>
             <Link href="/update">Daily Update</Link>
@@ -36,7 +36,7 @@ export default function Layout({ pageTitle, children }) {
         </div>
       : <div className={styles.other_navbar} id="navbar">
             <Image className={styles.img} src="/logo.png" width={40} height={40} alt="Logo"></Image>
-            <span>focussync</span>
+            <span><Link href="/">focussync</Link></span>
         </div>
       }
       <div className={styles.content}>
