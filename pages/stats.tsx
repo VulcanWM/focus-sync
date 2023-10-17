@@ -21,6 +21,7 @@ type StringNumberDictType = {
 
 const months: MonthsType = {"January": 31, "February": 30, "March": 31, "April": 30, "May": 31, "June": 30, "July": 31, "August": 31, "September": 30, "October": 31, "November": 30, "December": 31}
 const days: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+const allBadges: number[] = [1, 2, 5, 10, 20, 30, 50, 75, 100, 150, 200]
 
 function getMonths(firstMonth: string, firstYear: number, lastMonth: string, lastYear: number) {
     var currentDate = firstMonth + " " + String(firstYear)
@@ -74,10 +75,10 @@ export default function Home( { userString, updatesString}:Props ) {
   
   return (
     <Layout pageTitle={`User Stats`}>
-      <div id="content">
-        <h1>Your User Stats</h1>
+      <div>
+        <h1 className={styles.textCenter}>Your User Stats</h1>
         {allMonths.length == 0 &&
-            <p>Submit an update to see your stats page come to life!</p>
+            <p className={styles.textCenter}>Submit an update to see your stats page come to life!</p>
         }
         {
             allMonths.map((monthYear: string, index: number) => ( 
@@ -108,8 +109,28 @@ export default function Home( { userString, updatesString}:Props ) {
                 
             ))
         }
-        {/* <h2>Badges</h2> */}
-        
+        <h2 className={styles.textCenter}>Badges</h2>
+        {allMonths.length == 0 ?
+            <p className={styles.textCenter}>Submit an update to see your earn your first badge!</p>
+        :   <p className={styles.textCenter}>These badges are for the number of days you've submitted an update!</p>
+        }
+        <div className={styles.badges}>
+            {
+                allBadges.map((number: number, index: number) => ( 
+                    <>
+                        {updates.length >= number ?
+                            <div className={styles.badge + " " + styles[user.house]} id={String(index)}>
+                                <p>{number}</p>
+                            </div>
+                        : 
+                            <div className={styles.badge} id={String(index)}>
+                                <p>{number}</p>
+                            </div>
+                        }
+                    </>
+                ))
+            }
+        </div>
       </div>
     </Layout>
   );

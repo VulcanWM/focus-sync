@@ -65,3 +65,47 @@
 .score5 {
     border: 5.625px rgba(0, 255, 26, 1) solid;
 }
+
+.badges {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.textCenter {
+    text-align: center;
+}
+
+.badge {
+    margin: 10px;
+    width: 4rem;
+    height: 4rem;
+    font-size: 2rem;
+    border-radius: 10px;
+    color: rgb(100, 100, 100);
+    border: 1px dashed rgb(100, 100, 100);
+    text-align: center;
+    line-height: 0.5rem;
+}
+
+.verdant {
+    border: 1px dashed #55F50A;
+    color: #55F50A;
+}
+
+.erythro {
+    border: 1px dashed #ff0000;
+    color: #ff0000;
+}
+
+.lumos {
+    border: 1px dashed #FFC700;
+    color: #FFC700;
+}
+
+.azurite {
+    border: 1px dashed #25B1FF;
+    color: #25B1FF;
+}
