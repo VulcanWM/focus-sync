@@ -17,7 +17,7 @@ export default function Layout({ pageTitle, children }) {
         <meta name="og:description" content="Community driven productivity website that helps users achieve their goals in a social and fun way. Set goals, track task time, and stay motivated by seeing how others are performing."/>
         <meta
           property="og:image"
-          content="/logo.png"
+          content="https://focus-sync.vercel.app/logo.png"
         />
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
