@@ -24,22 +24,25 @@ export default function Update({userString}: Props) {
 
     const [tasks, setTasks] = useState<Tasks>({})
     const [taskName, setTaskName] = useState<string>("")
-    const [taskTime, setTaskTime] = useState<number>(5)
+    const [taskTime, setTaskTime] = useState<null | number>(null)
     const [rating, setRating] = useState<number>(3)
     const [date, setDate] = useState("")
-    const [msg, setMsg] = useState("Only include tasks relevant to your goal")
+    const [msg, setMsg] = useState("Add tasks you've done today related to your goal")
 
     function createTask(){
         if (taskName == ""){setMsg("Give a name to your task");return}
         if (Object.keys(tasks).includes(taskName)){setMsg("This task already exists");return}
         if (Object.keys(tasks).length == 10){setMsg("You can add a maximum of 10 tasks");return}
+        if (taskTime == null){setMsg("Give a time to your task in minutes");return}
         if (taskTime<=0){setMsg("The task time has to be greater than 0");return}
         if (taskName.length>50){setMsg("Your task can only have 50 characters or less");return}
         setTasks(tasks => ({
             ...tasks,
             ...{[taskName]: taskTime}
         }));
-        setMsg("Only include tasks relevant to your goal")
+        setMsg("Add more tasks you've done today related to your goal")
+        setTaskName("")
+        setTaskTime(null)
     }
 
     function deleteTask(task: string){
@@ -92,9 +95,9 @@ export default function Update({userString}: Props) {
         <Layout pageTitle="Daily Update">
             <div id="content">
                 <h2>Daily Update</h2>
-                <p className={msg=="Only include tasks relevant to your goal"?styles.success:styles.red}>{msg}</p>
-                <input className={styles.input} value={taskName} placeholder="productive task" type="text" onChange={e => setTaskName(e.target.value)}></input>
-                <input className={styles.input} value={taskTime} placeholder="time taken" type="number" onChange={e => setTaskTime(parseFloat(e.target.value))}></input>
+                <p className={msg.startsWith("Add")?styles.success:styles.red}>{msg}</p>
+                <input id="taskName" className={styles.input} value={taskName} placeholder="productive task" type="text" onChange={e => setTaskName(e.target.value)}></input>
+                <input id="taskTime" className={styles.input} value={taskTime || ''} placeholder="time taken (mins)" type="number" onChange={e => setTaskTime(parseFloat(e.target.value))}></input>
                 <button className={styles.button} onClick={createTask}>create task</button>
                 { 
                     Object.keys(tasks).map((task) => ( 
