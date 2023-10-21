@@ -20,7 +20,7 @@ export default function Layout({ pageTitle, children }) {
           content="https://focus-sync.vercel.app/logo.png"
         />
         <meta name="og:title" content={siteTitle} />
-        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:card" content="https://focus-sync.vercel.app/banner.png" />
         <meta property="og:url" content="https://focus-sync.vercel.app" />
         <meta property="og:site_name" content={siteTitle} />
         <meta name="robots" content="index, follow"/>
