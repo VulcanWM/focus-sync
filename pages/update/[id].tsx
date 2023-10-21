@@ -11,10 +11,11 @@ import axios from 'axios'
 
 type Props = {
     updateString: string,
-    admin: string
+    admin: string,
+    your_username: string
 };
 
-export default function Home( { updateString, admin}:Props ) {
+export default function Home( { updateString, admin, your_username}:Props ) {
   const router = useRouter();
   const update = JSON.parse(updateString)
 
@@ -36,7 +37,7 @@ export default function Home( { updateString, admin}:Props ) {
       <div id="content">
         <h2 className={styles.user_heading}><img className={styles.house} alt={`${update.house} logo`} src={`/${update.house}.png`}/> <Link href={`/user/${update.username}`}>{update.username}</Link> day {update.day}</h2>
         <p>{update.date.split("T")[0]}</p>
-        {admin&&<button onClick={() => (deleteUpdate(update._id))}>delete update</button>}
+        {((update.username == your_username) || admin)&&<button onClick={() => (deleteUpdate(update._id))}>delete update</button>}
         <p>Productivity Rating: <strong>{update.rating as string}</strong></p>
         <div className={styles.update}>
             { 
@@ -83,7 +84,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     return {
         props: {
             updateString: JSON.stringify(update),
-            admin: admin
+            admin: admin,
+            your_username: your_username
         },
     }
 }

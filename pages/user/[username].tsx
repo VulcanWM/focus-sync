@@ -13,7 +13,8 @@ import axios from 'axios'
 type Props = {
     userString: string,
     updatesString: string,
-    admin: boolean
+    admin: boolean,
+    your_username: string
 };
 
 type UpdateType = {
@@ -24,7 +25,7 @@ type UpdateType = {
     _id: string
 }
 
-export default function UserPage( { userString, updatesString, admin}:Props ) {
+export default function UserPage( { userString, updatesString, admin, your_username}:Props ) {
   const router = useRouter();
 
   const user = JSON.parse(userString)
@@ -43,7 +44,6 @@ export default function UserPage( { userString, updatesString, admin}:Props ) {
         }
     });
   }
-  
   return (
     <Layout pageTitle={`${user.username}'s profile`}>
         <div id="content">
@@ -58,7 +58,7 @@ export default function UserPage( { userString, updatesString, admin}:Props ) {
                     { 
                         updates.map((update: UpdateType, indexUpdate: number) => ( 
                             <div key={indexUpdate} className={styles.update}>
-                                <p><Link href={`/update/${update._id}`}>Day {update.day}</Link>{admin&&<button onClick={() => (deleteUpdate(update._id))}>delete update</button>}</p>
+                                <p><Link href={`/update/${update._id}`}>Day {update.day}</Link>{((user.username == your_username) || admin)&&<button onClick={() => (deleteUpdate(update._id))}>delete update</button>}</p>
                                 { 
                                     Object.keys(update.tasks).map((task: string, indexTask:number) => ( 
                                         <div key={indexUpdate + ":" + indexTask}>
@@ -115,7 +115,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         props: {
             userString: JSON.stringify(user),
             updatesString: JSON.stringify(updates),
-            admin: admin
+            admin: admin,
+            your_username: your_username
         },
     }
 }

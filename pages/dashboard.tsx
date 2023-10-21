@@ -12,7 +12,8 @@ import { admins } from '@/lib/admins';
 type Props = {
   userString: string,
   updatesString: string,
-  admin: boolean
+  admin: boolean,
+  username: string
 };
 
 type UpdateType = {
@@ -26,7 +27,7 @@ type UpdateType = {
   house: string
 }
 
-export default function Dashboard( {userString, updatesString, admin}: Props ) {
+export default function Dashboard( {userString, updatesString, admin, username}: Props ) {
   const user = JSON.parse(userString)
   const [noMorePosts, setNoMorePosts] = useState(false)
   const [updates, setUpdates] = useState<UpdateType[]>(JSON.parse(updatesString))
@@ -71,7 +72,7 @@ export default function Dashboard( {userString, updatesString, admin}: Props ) {
             updates.map((update: UpdateType, indexUpdate: number) => ( 
                 <div key={indexUpdate} className={styles.update}>
                     <p><strong><Link href={`/user/${update.username}`}>{update.username}</Link></strong></p>
-                    <p><Link href={`/update/${update._id}`}>Day {update.day}</Link>{admin&&<button onClick={() => (deleteUpdate(update._id))}>delete update</button>}</p>
+                    <p><Link href={`/update/${update._id}`}>Day {update.day}</Link>{((update.username == username) || admin)&&<button onClick={() => (deleteUpdate(update._id))}>delete update</button>}</p>
                     { 
                         Object.keys(update.tasks).map((task: string, indexTask:number) => ( 
                             <div key={indexUpdate + " " + indexTask}>
@@ -113,7 +114,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         props: {
           userString: JSON.stringify(user),
           updatesString: JSON.stringify(updates),
-          admin: admin
+          admin: admin,
+          username: user.username
         },
       }
     }
