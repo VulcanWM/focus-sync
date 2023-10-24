@@ -2,7 +2,8 @@ import Head from 'next/head';
 import Link from 'next/link';
 import styles from '../styles/layout.module.css'
 import Script from 'next/script';
-import Image from 'next/image'
+import Image from 'next/image';
+import { Analytics } from '@vercel/analytics/react';
 
 const siteTitle = "FocusSync";
 
@@ -52,6 +53,7 @@ export default function Layout({ pageTitle, children }) {
           gtag('config', 'G-LWYYY8S2HJ');
         `}
       </Script>
+      <Analytics />
     </>
   );
 }
