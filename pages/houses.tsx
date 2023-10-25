@@ -1,7 +1,7 @@
 import styles from '@/styles/houses.module.css'
 import Layout from '@/components/layout';
 
-export default function Home() {
+export default function Houses() {
   return (
     <Layout pageTitle="Houses">
       <div>

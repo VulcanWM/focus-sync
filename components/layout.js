@@ -29,7 +29,7 @@ export default function Layout({ pageTitle, children }) {
         <meta name="google-site-verification" content="d3cd3FIDhsMDI3e_zwDnkg4GLGdu-cJu23VVpa-eC6o" />
         <title>{title}</title>
       </Head>
-      {['Home', 'Create Account', 'Houses'].includes(pageTitle) == false ?
+      {['Home', 'Create Account', 'Houses', 'Privacy Policy'].includes(pageTitle) == false ?
         <div className={styles.navbar} id="navbar">
             <Link href="/dashboard">Dashboard</Link>
             <Link href="/update">Daily Update</Link>
