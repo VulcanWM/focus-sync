@@ -113,7 +113,7 @@ export async function create_update(username: string, date: Date, rating: number
             return "You have to submit an update after your last update's date!"
         }
     }
-    const update = await Update.create({_id: update_id, username: username, house: house, date: date, rating: rating, tasks: tasks, day: day, created: created})
+    const update = await Update.create({_id: update_id, username: username, house: house, date: date, rating: rating, tasks: tasks, day: day, created: created, mood: "No"})
     return true
 }
 

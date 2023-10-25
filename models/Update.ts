@@ -8,7 +8,8 @@ const UpdateSchema = new mongoose.Schema({
   rating: Number,
   tasks: Object,
   day: Number,
-  created: Date
+  created: Date,
+  mood: String
 })
 
 
