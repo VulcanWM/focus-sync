@@ -38,6 +38,7 @@
     border: none;
     font-weight:bold;
     font-size: 1rem;
+    margin-left: 0.5rem;
 }
   
 .more_posts:hover {
