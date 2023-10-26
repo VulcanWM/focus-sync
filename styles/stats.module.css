@@ -1,3 +1,8 @@
+/* .calendars {
+    display: flex;
+    flex-direction: row;
+} */
+
 .calendar {
     display: grid;
     grid-template-columns: 36px 36px 36px 36px 36px 36px 36px;
@@ -5,6 +10,10 @@
     column-gap: 18px;
     row-gap: 18px;
 }
+
+/* .caption {
+    text-align: center;
+} */
 
 .day {
     height: 36px;

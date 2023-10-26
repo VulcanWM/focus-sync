@@ -65,7 +65,7 @@ export async function get_last_update(username: string){
     return last_update
 }
 
-export async function create_update(username: string, date: Date, rating: number, tasksOriginal: Tasks){
+export async function create_update(username: string, date: Date, rating: number, tasksOriginal: Tasks, mood: string){
     const user = await get_user(username)
     if (user == false){
         return "Your username does not exist!"
@@ -113,7 +113,7 @@ export async function create_update(username: string, date: Date, rating: number
             return "You have to submit an update after your last update's date!"
         }
     }
-    const update = await Update.create({_id: update_id, username: username, house: house, date: date, rating: rating, tasks: tasks, day: day, created: created, mood: "No"})
+    const update = await Update.create({_id: update_id, username: username, house: house, date: date, rating: rating, tasks: tasks, day: day, created: created, mood: mood})
     return true
 }
 

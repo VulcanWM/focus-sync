@@ -18,13 +18,14 @@ export default async function handler(
 ) {
   const session = await getServerSession(req, res, authOptions)
   if (session) {
+    const mood = req.body.mood as string;
     const rating = req.body.rating as number;
     const tasks: Tasks = req.body.tasks;
     const dateString = String(req.body.date);
     const date = new Date(dateString)
     const user = await get_user_from_email(session!.user!.email as string);
     const username = user.username;
-    const func = await create_update(username, date, rating, tasks)
+    const func = await create_update(username, date, rating, tasks, mood)
     if (func == true){
       res.status(200).json({ message: 'Created!', error: false })
     } else {

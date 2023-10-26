@@ -59,6 +59,7 @@ export default function Home( { userString, updatesString}:Props ) {
     const firstMonth = Object.keys(months)[new Date(updates[updates.length - 1].date).getMonth()]
     const firstYear = new Date(updates[updates.length - 1].date).getFullYear()
     allMonths = getMonths(firstMonth, firstYear, lastMonth, lastYear)
+    // allMonths.push("November 2023")
 
     for (let update of updates){
         let year = String(update.date).split("-")[0]
@@ -80,35 +81,38 @@ export default function Home( { userString, updatesString}:Props ) {
         {allMonths.length == 0 &&
             <p className={styles.textCenter}>Submit an update to see your stats page come to life!</p>
         }
-        {
-            allMonths.map((monthYear: string, index: number) => ( 
-                <>
-                    <h4>{monthYear}</h4>
-                    <p>{}</p>
-                    <div className={styles.calendar}>
-                        {
-                            days.map((day: string, index: number) => ( 
-                                <div className={styles.day}>{day.slice(0, 2)}</div>
-                            ))
-                        }
-                        {
-                            Array.from(Array(days.indexOf(new Date(`${monthYear.split(" ")[1]}-${Object.keys(months).indexOf(monthYear.split(" ")[0])+1}-01`).toLocaleString('en-us', {weekday:'long'}))).keys()).map((index: number) => ( 
-                                <div className={styles.day}></div>
-                            ))
-                        }
-                        {
-                            Array.from(Array(31).keys()).map((index: number) => ( 
-                                <div className={styles.date + " " + styles["score" + scores[String(index + 1) + " " + monthYear]]}>
-                                    <Link className={styles.noLinkStyling} href={`/update/${user.username}:${dayNumbers[String(index + 1) + " " + monthYear]}`}>{index + 1}</Link>
-                                    <span className={styles.taskNumber}>{taskNumbers[String(index + 1) + " " + monthYear] || 0}</span>
-                                </div>
-                            ))
-                        }
-                    </div>
-                </>
-                
-            ))
-        }
+        <div className={styles.calendars}>
+            {
+                allMonths.map((monthYear: string, index: number) => ( 
+                    <>
+                        <div className={styles.caption}>
+                            <h4>{monthYear}</h4>
+                        </div>
+                        <div className={styles.calendar}>
+                            {
+                                days.map((day: string, index: number) => ( 
+                                    <div className={styles.day}>{day.slice(0, 2)}</div>
+                                ))
+                            }
+                            {
+                                Array.from(Array(days.indexOf(new Date(`${monthYear.split(" ")[1]}-${Object.keys(months).indexOf(monthYear.split(" ")[0])+1}-01`).toLocaleString('en-us', {weekday:'long'}))).keys()).map((index: number) => ( 
+                                    <div className={styles.day}></div>
+                                ))
+                            }
+                            {
+                                Array.from(Array(31).keys()).map((index: number) => ( 
+                                    <div className={styles.date + " " + styles["score" + scores[String(index + 1) + " " + monthYear]]}>
+                                        <Link className={styles.noLinkStyling} href={`/update/${user.username}:${dayNumbers[String(index + 1) + " " + monthYear]}`}>{index + 1}</Link>
+                                        <span className={styles.taskNumber}>{taskNumbers[String(index + 1) + " " + monthYear] || 0}</span>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    </>
+                    
+                ))
+            }
+        </div>
         <h2 className={styles.textCenter}>Badges</h2>
         {allMonths.length == 0 ?
             <p className={styles.textCenter}>Submit an update to see your earn your first badge!</p>

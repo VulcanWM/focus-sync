@@ -18,6 +18,8 @@ type Props = {
     userString: string
 };
 
+const moods: string[] = ["Happy", "Sad", "Angry", "Anxious", "Frustrated", "Stressed", "Relaxed", "Tired", "Excited", "Overwhelmed", "Irritated", "Self-loathing"]
+
 export default function Update({userString}: Props) {
     const router = useRouter();
     const user = JSON.parse(userString)
@@ -26,7 +28,8 @@ export default function Update({userString}: Props) {
     const [taskName, setTaskName] = useState<string>("")
     const [taskTime, setTaskTime] = useState<null | number>(null)
     const [rating, setRating] = useState<number>(3)
-    const [date, setDate] = useState("")
+    const [date, setDate] = useState<string>("")
+    const [mood, setMood] = useState<string>("No")
     const [msg, setMsg] = useState("Add tasks you've done today related to your goal")
 
     function createTask(){
@@ -80,7 +83,8 @@ export default function Update({userString}: Props) {
         const userData = {
             tasks: tasks,
             rating: rating,
-            date: date
+            date: date,
+            mood: mood
         }
         axios.post(`/api/update`, userData).then((response) => {
             if (response.data.error == false){
@@ -108,11 +112,22 @@ export default function Update({userString}: Props) {
                     ))
                 }
                 {Object.keys(tasks).length > 0 &&
-                <>
-                    <input min={0} max={5} className={styles.input} value={rating} placeholder="rating productivity" type="number" onChange={e => setRating(parseInt(e.target.value))}></input>
-                    <input className={styles.input} value={date} placeholder="update date" type="date" onChange={e => setDate(e.target.value)}></input>
-                    <button className={styles.button} onClick={createUpdate}>submit update</button>
-                </>}
+                  <>
+                      <input min={0} max={5} className={styles.input} value={rating} placeholder="rating productivity" type="number" onChange={e => setRating(parseInt(e.target.value))}></input>
+                      <input className={styles.input} value={date} placeholder="update date" type="date" onChange={e => setDate(e.target.value)}></input>
+                      <select  onChange={e => setMood(e.target.value)} value={mood} className={styles.input} name="mood" id="mood">
+                        <option value="No">No emotion</option>
+                        { 
+                          moods.map((mood) => ( 
+                            <>
+                              <option value={mood}>{mood}</option>
+                            </>
+                          ))
+                        }
+                      </select>
+                      <button className={styles.button} onClick={createUpdate}>submit update</button>
+                  </>
+                }
             </div>
         </Layout>
   )
