@@ -34,6 +34,7 @@ export default function Layout({ pageTitle, children }) {
             <Link href="/dashboard">Dashboard</Link>
             <Link href="/update">Daily Update</Link>
             <Link href="/stats">Stats</Link>
+            <Link href="/insights">Insights</Link>
         </div>
       : <div className={styles.other_navbar} id="navbar">
             <Image className={styles.img} src="/logo.png" width={40} height={40} alt="Logo"></Image>
