@@ -18,7 +18,7 @@ type Props = {
     userString: string
 };
 
-const moods: string[] = ["Happy", "Sad", "Angry", "Anxious", "Frustrated", "Stressed", "Relaxed", "Tired", "Excited", "Overwhelmed", "Irritated", "Self-loathing"]
+const moods: string[] = ["Happy", "Sad", "Angry", "Anxious", "Frustrated", "Stressed", "Relaxed", "Tired", "Excited", "Overwhelmed", "Irritated", "Motivated", "Self-loathing"]
 
 export default function Update({userString}: Props) {
     const router = useRouter();

@@ -1,7 +1,10 @@
-/* .calendars {
+.calendars {
     display: flex;
     flex-direction: row;
-} */
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
 
 .calendar {
     display: grid;
@@ -9,11 +12,17 @@
     background-color: transparent;
     column-gap: 18px;
     row-gap: 18px;
+    margin-right: 50px;
 }
 
-/* .caption {
+.caption {
     text-align: center;
-} */
+}
+
+.parent {
+    flex-direction: column;
+    display: flex;
+}
 
 .day {
     height: 36px;

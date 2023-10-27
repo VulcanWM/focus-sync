@@ -59,7 +59,6 @@ export default function Home( { userString, updatesString}:Props ) {
     const firstMonth = Object.keys(months)[new Date(updates[updates.length - 1].date).getMonth()]
     const firstYear = new Date(updates[updates.length - 1].date).getFullYear()
     allMonths = getMonths(firstMonth, firstYear, lastMonth, lastYear)
-    // allMonths.push("November 2023")
 
     for (let update of updates){
         let year = String(update.date).split("-")[0]
@@ -84,7 +83,7 @@ export default function Home( { userString, updatesString}:Props ) {
         <div className={styles.calendars}>
             {
                 allMonths.map((monthYear: string, index: number) => ( 
-                    <>
+                    <div className={styles.parent}>
                         <div className={styles.caption}>
                             <h4>{monthYear}</h4>
                         </div>
@@ -108,7 +107,7 @@ export default function Home( { userString, updatesString}:Props ) {
                                 ))
                             }
                         </div>
-                    </>
+                    </div>
                     
                 ))
             }
