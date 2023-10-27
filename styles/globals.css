@@ -22,6 +22,10 @@ html {
   text-align: center;
 }
 
+#textCenter {
+  text-align: center;
+}
+
 a {
   color: white;
 }

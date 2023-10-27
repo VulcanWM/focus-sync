@@ -1,0 +1,25 @@
+.flexParent {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.flexChild {
+    font-size: 1rem;
+    padding: 10px;
+    border: 1px dashed rgb(73, 72, 72);
+    border-radius: 10px;
+    margin: 10px;
+    width: 15rem;
+    height: 5rem;
+}
+
+.best {
+    border: 1px dashed #55F50A;
+}
+
+.worst {
+    border: 1px dashed #ff0000;
+}
