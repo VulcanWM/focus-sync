@@ -2,6 +2,11 @@ import styles from '@/styles/index.module.css'
 import { useRouter } from 'next/router';
 import Layout from '@/components/layout';
 import { useState, useEffect } from 'react';
+import { get_user_from_email } from '@/lib/database'
+import { getServerSession } from "next-auth/next"
+import { authOptions } from './api/auth/[...nextauth]'
+import { GetServerSidePropsContext } from 'next'
+import { signIn} from "next-auth/react"
 
 interface IDot {
   top: string;
@@ -9,11 +14,21 @@ interface IDot {
   width: string;
 }
 
-export default function Home() {
+type Props = {
+  username: any
+};
+
+export default function Home( {username}:Props  ) {
   const router = useRouter();
 
   const redirectToJoin = () => {
-    router.push('/create-account');
+    if (username == null){
+      signIn(undefined, { callbackUrl: '/create-account' })
+    } else if (username == false){
+      router.push('/create-account');
+    } else {
+      router.push('/dashboard');
+    }
   };
 
   const [dots, setDots] = useState<IDot[]>([...Array(20)].map(() => ({
@@ -63,4 +78,28 @@ export default function Home() {
       </div>
     </Layout>
   )
+}
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getServerSession(
+      context.req,
+      context.res,
+      authOptions
+  )
+
+  if (session){
+      var username = null;
+      const email = session!.user!.email as string;
+      const user = await get_user_from_email(email)
+      if (user == false){
+        username = false;
+      } else {
+        username = user.username;
+      }
+  }
+  return {
+    props: {
+        username: username || null
+    },
+  }
 }
