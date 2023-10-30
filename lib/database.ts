@@ -166,7 +166,12 @@ export async function unban_user(username: string, admin: string){
 }
 
 export async function delete_update(update_id: string, admin: string){
-    if (admins.includes(admin)){
+    const update = await get_update(update_id)
+    if (update.username == admin){
+        await Update.deleteOne({_id: update_id})
+        return true
+    }
+    else if (admins.includes(admin)){
         await Update.deleteOne({_id: update_id})
         return true
     } else {
