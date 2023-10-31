@@ -242,6 +242,7 @@ export async function close_milestone(name: string, username: string){
     if (milestone.status == false){
         return 'This milestone is already closed!'
     }
+    milestone['status'] = false
     await Milestone.findOneAndUpdate({_id: milestone._id}, {status: false});
-    return true
+    return milestone
 }
