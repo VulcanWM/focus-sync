@@ -6,6 +6,7 @@ import { get_user_from_email, get_open_milestones, get_closed_milestones } from 
 import styles from '@/styles/dashboard.module.css'
 import { useState } from 'react';
 import axios from 'axios'
+import { Trash2 } from 'lucide-react';
 
 type Props = {
   userString: string,
@@ -39,7 +40,24 @@ export default function Dashboard( {userString, openMilestonesString, closedMile
             setMsg(response.data.message)
         }
     });
-}
+  }
+
+  async function deleteMilestone(milestoneName: string, status: boolean){
+    const userData = {
+      name: milestoneName
+    }
+    axios.post(`/api/delete-milestone`, userData).then((response) => {
+        if (response.data.error == false){
+            if (status == true){
+              setOpenMilestones(openMilestones.filter(item => item.name !== milestoneName));
+            } else {
+              setClosedMilestones(closedMilestones.filter(item => item.name !== milestoneName));
+            }
+        } else {
+            setMsg(response.data.message)
+        }
+    });
+  }
 
   return (
     <Layout pageTitle="Dashboard">
@@ -49,7 +67,7 @@ export default function Dashboard( {userString, openMilestonesString, closedMile
         { 
             openMilestones.map((milestone: MilestoneType) => ( 
                 <div key={milestone.name}>
-                    <p>{milestone.name}</p>
+                    <p>{milestone.name} <Trash2 onClick={() => deleteMilestone(milestone.name, true)}/></p>
                 </div>
             ))
         }
@@ -57,7 +75,7 @@ export default function Dashboard( {userString, openMilestonesString, closedMile
         { 
             closedMilestones.map((milestone: MilestoneType) => ( 
                 <div key={milestone.name}>
-                    <p>{milestone.name}</p>
+                    <p>{milestone.name} <Trash2 onClick={() => deleteMilestone(milestone.name, false)}/></p>
                 </div>
             ))
         }
