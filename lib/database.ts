@@ -246,3 +246,16 @@ export async function close_milestone(name: string, username: string){
     await Milestone.findOneAndUpdate({_id: milestone._id}, {status: false});
     return milestone
 }
+
+export async function reopen_milestone(name: string, username: string){
+    const milestone = await get_milestone(name, username)
+    if (milestone == false){
+        return "This milestone doesn't exist!"
+    }
+    if (milestone.status == true){
+        return 'This milestone is already open!'
+    }
+    milestone['status'] = true
+    await Milestone.findOneAndUpdate({_id: milestone._id}, {status: true});
+    return milestone
+}
