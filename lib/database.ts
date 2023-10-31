@@ -215,3 +215,21 @@ export async function get_closed_milestones(username: string){
     const milestones = await Milestone.find({username: username, status: false})
     return milestones
 }
+
+export async function get_milestone(name: string, username: string){
+    const milestones = await Milestone.find({name: name, username: username})
+    if (milestones.length == 0){
+        return false
+    } else {
+        return milestones[0]
+    }
+}
+
+export async function delete_milestone(name: string, username: string){
+    const milestone = await get_milestone(name, username)
+    if (milestone == false){
+        return "This milestone doesn't exist!"
+    }
+    await Milestone.deleteOne({_id: milestone._id})
+    return true
+}
