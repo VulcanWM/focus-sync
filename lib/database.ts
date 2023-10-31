@@ -197,6 +197,10 @@ export async function create_milestone(name: string, username: string){
     if (user.plan == "Premium" && milestones.length >= 25){
         return "You can only have 25 milestones!"
     }
+    let names = milestones.map(m => m.name);
+    if (names.includes(name)){
+        return "You already have a milestone with this name!"
+    }
     await Milestone.create({name: name, username: username, tasks: [], status: true, totalTime: 0})
     return true    
 }
