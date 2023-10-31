@@ -204,3 +204,13 @@ export async function create_milestone(name: string, username: string){
     await Milestone.create({name: name, username: username, tasks: [], status: true, totalTime: 0})
     return true    
 }
+
+export async function get_open_milestones(username: string){
+    const milestones = await Milestone.find({username: username, status: true})
+    return milestones
+}
+
+export async function get_closed_milestones(username: string){
+    const milestones = await Milestone.find({username: username, status: false})
+    return milestones
+}
