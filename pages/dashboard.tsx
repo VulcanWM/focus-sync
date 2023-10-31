@@ -73,6 +73,20 @@ export default function Dashboard( {userString, openMilestonesString, closedMile
     });
   }
 
+  async function reopenMilestone(milestoneName: string){
+    const userData = {
+      name: milestoneName
+    }
+    axios.post(`/api/reopen-milestone`, userData).then((response) => {
+        if (response.data.error == false){
+            setClosedMilestones(closedMilestones.filter(item => item.name !== milestoneName));
+            setOpenMilestones(oldArray => [...oldArray, response.data.data]);
+        } else {
+            setMsg(response.data.message)
+        }
+    });
+  }
+
   return (
     <Layout pageTitle="Dashboard">
       <div id="content_notcenter">
@@ -89,7 +103,7 @@ export default function Dashboard( {userString, openMilestonesString, closedMile
         { 
             closedMilestones.map((milestone: MilestoneType) => ( 
                 <div key={milestone.name}>
-                    <p><GitCompareArrows /> {milestone.name} <Trash2 onClick={() => deleteMilestone(milestone.name, false)}/></p>
+                    <p><GitCompareArrows onClick={() => reopenMilestone(milestone.name)}/> {milestone.name} <Trash2 onClick={() => deleteMilestone(milestone.name, false)}/></p>
                 </div>
             ))
         }
