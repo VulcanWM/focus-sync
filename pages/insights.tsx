@@ -38,6 +38,9 @@ type MainObjectValueType = {
 export default function UserPage( { userString, updatesString}:Props ) {
   const user = JSON.parse(userString)
   const updates: UpdateType[] = JSON.parse(updatesString)
+  if (updates.length == 0){
+    
+  }
 
   const calculateCorrelation = (data: UpdateType[]) => {
     const correlation: MainObjectType = {};

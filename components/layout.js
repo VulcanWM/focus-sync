@@ -32,6 +32,7 @@ export default function Layout({ pageTitle, children }) {
       {['Home', 'Create Account', 'Houses', 'Privacy Policy'].includes(pageTitle) == false ?
         <div className={styles.navbar} id="navbar">
             <Link href="/dashboard">Dashboard</Link>
+            <Link href="/feed">Feed</Link>
             <Link href="/update">Daily Update</Link>
             <Link href="/stats">Stats</Link>
             <Link href="/insights">Insights</Link>
