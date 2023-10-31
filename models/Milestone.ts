@@ -9,4 +9,4 @@ const MilestoneSchema = new mongoose.Schema({
 })
 
 
-export default mongoose.models.Milestone || mongoose.model('Update', MilestoneSchema);
+export default mongoose.models.Milestone || mongoose.model('Milestone', MilestoneSchema);

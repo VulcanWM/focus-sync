@@ -1,6 +1,7 @@
 import dbConnect from './mongodb'
 import User from '../models/User'
 import Update from '@/models/Update';
+import Milestone from '@/models/Milestone';
 import { profanity } from '@2toad/profanity';
 import {admins} from '../lib/admins'
 
@@ -178,3 +179,9 @@ export async function delete_update(update_id: string, admin: string){
         return "You are not an admin!"
     }
 }
+
+export async function get_all_milestones(username: string){
+    const milestones = await Milestone.find({username: username})
+    return milestones
+}
+
