@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "./api/auth/[...nextauth]"
 import { GetServerSidePropsContext } from 'next'
 import { get_user_from_email, get_latest_updates } from '@/lib/database';
-import styles from '@/styles/dashboard.module.css'
+import styles from '@/styles/feed.module.css'
 import { useState } from 'react'
 import axios from 'axios'
 import Link from 'next/link';
