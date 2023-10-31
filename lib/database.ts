@@ -185,3 +185,18 @@ export async function get_all_milestones(username: string){
     return milestones
 }
 
+export async function create_milestone(name: string, username: string){
+    const milestones = await get_all_milestones(username)
+    const user = await get_user(username)
+    if (user == false){
+        return "You are not logged in!"
+    }
+    if (user.plan == "Standard" && milestones.length >= 10){
+        return "You can only have 10 milestones!"
+    }
+    if (user.plan == "Premium" && milestones.length >= 25){
+        return "You can only have 25 milestones!"
+    }
+    await Milestone.create({name: name, username: username, tasks: [], status: true, totalTime: 0})
+    return true    
+}
