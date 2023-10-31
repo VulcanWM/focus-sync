@@ -6,7 +6,7 @@ import { get_user_from_email, get_open_milestones, get_closed_milestones } from 
 import styles from '@/styles/dashboard.module.css'
 import { useState } from 'react';
 import axios from 'axios'
-import { Trash2, CheckSquare } from 'lucide-react';
+import { Trash2, CheckSquare, GitCompareArrows } from 'lucide-react';
 
 type Props = {
   userString: string,
@@ -89,7 +89,7 @@ export default function Dashboard( {userString, openMilestonesString, closedMile
         { 
             closedMilestones.map((milestone: MilestoneType) => ( 
                 <div key={milestone.name}>
-                    <p>{milestone.name} <Trash2 onClick={() => deleteMilestone(milestone.name, false)}/></p>
+                    <p><GitCompareArrows /> {milestone.name} <Trash2 onClick={() => deleteMilestone(milestone.name, false)}/></p>
                 </div>
             ))
         }
