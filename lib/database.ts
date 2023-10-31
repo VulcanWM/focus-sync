@@ -201,8 +201,9 @@ export async function create_milestone(name: string, username: string){
     if (names.includes(name)){
         return "You already have a milestone with this name!"
     }
-    await Milestone.create({name: name, username: username, tasks: [], status: true, totalTime: 0})
-    return true    
+    const document = {name: name, username: username, tasks: [], status: true, totalTime: 0}
+    await Milestone.create(document)
+    return document
 }
 
 export async function get_open_milestones(username: string){

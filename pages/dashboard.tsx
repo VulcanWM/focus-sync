@@ -2,17 +2,29 @@ import Layout from '@/components/layout';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./api/auth/[...nextauth]"
 import { GetServerSidePropsContext } from 'next'
-import { get_user_from_email } from '@/lib/database';
+import { get_user_from_email, get_open_milestones, get_closed_milestones } from '@/lib/database';
 import styles from '@/styles/dashboard.module.css'
 import { useState } from 'react';
 import axios from 'axios'
 
 type Props = {
   userString: string,
+  openMilestonesString: string,
+  closedMilestonesString: string
 };
 
-export default function Dashboard( {userString}: Props ) {
+type MilestoneType = {
+  name: string,
+  username: string,
+  tasks: object,
+  status: boolean,
+  totalTime: number
+}
+
+export default function Dashboard( {userString, openMilestonesString, closedMilestonesString}: Props ) {
   const user = JSON.parse(userString)
+  const [openMilestones, setOpenMilestones] = useState<MilestoneType[]>(JSON.parse(openMilestonesString))
+  const [closedMilestones, setClosedMilestones] = useState<MilestoneType[]>(JSON.parse(closedMilestonesString))
   const [name, setName] = useState<string>("")
   const [msg, setMsg] = useState<string>("")
 
@@ -22,8 +34,7 @@ export default function Dashboard( {userString}: Props ) {
     }
     axios.post(`/api/create-milestone`, userData).then((response) => {
         if (response.data.error == false){
-            // add to milestones
-            setMsg("created")
+            setOpenMilestones(oldArray => [...oldArray, response.data.data]);
         } else {
             setMsg(response.data.message)
         }
@@ -34,6 +45,22 @@ export default function Dashboard( {userString}: Props ) {
     <Layout pageTitle="Dashboard">
       <div id="content_notcenter">
         <h1>hey {user.username}</h1>
+        <h2>Open Milestones</h2>
+        { 
+            openMilestones.map((milestone: MilestoneType) => ( 
+                <div key={milestone.name}>
+                    <p>{milestone.name}</p>
+                </div>
+            ))
+        }
+        <h2>Closed Milestones</h2>
+        { 
+            closedMilestones.map((milestone: MilestoneType) => ( 
+                <div key={milestone.name}>
+                    <p>{milestone.name}</p>
+                </div>
+            ))
+        }
         <p className={styles.red}>{msg}</p>
         <input id="name" className={styles.input} value={name} placeholder="milestone name" type="text" onChange={e => setName(e.target.value)}></input>
         <button className={styles.button} onClick={createMilestone}>create milestone</button>
@@ -51,6 +78,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (session){
     const email = session!.user!.email as string;
     const user = await get_user_from_email(email)
+    const openMilestones = await get_open_milestones(user.username)
+    const closedMilestones = await get_closed_milestones(user.username)
 
     if (user == false){
       return {
@@ -63,6 +92,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       return {
         props: {
           userString: JSON.stringify(user),
+          openMilestonesString: JSON.stringify(openMilestones),
+          closedMilestonesString: JSON.stringify(closedMilestones)
         },
       }
     }
