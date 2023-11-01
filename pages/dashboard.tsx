@@ -96,7 +96,7 @@ export default function Dashboard( {userString, openMilestonesString, closedMile
         { 
             openMilestones.map((milestone: MilestoneType) => ( 
                 <div key={milestone.name}>
-                    <p><CheckSquare onClick={() => closeMilestone(milestone.name)}/> {milestone.name} <Trash2 onClick={() => deleteMilestone(milestone.name, true)}/></p>
+                    <p><CheckSquare onClick={() => closeMilestone(milestone.name)}/> {milestone.name} <Trash2 onClick={() => deleteMilestone(milestone.name, true)}/> <span className={styles[user.house]}>{milestone.totalTime} mins</span></p>
                 </div>
             ))
         }
@@ -104,7 +104,7 @@ export default function Dashboard( {userString, openMilestonesString, closedMile
         { 
             closedMilestones.map((milestone: MilestoneType) => ( 
                 <div key={milestone.name}>
-                    <p><GitCompareArrows onClick={() => reopenMilestone(milestone.name)}/> {milestone.name} <Trash2 onClick={() => deleteMilestone(milestone.name, false)}/></p>
+                    <p><GitCompareArrows onClick={() => reopenMilestone(milestone.name)}/> {milestone.name} <Trash2 onClick={() => deleteMilestone(milestone.name, false)}/> <span className={styles[user.house]}>{milestone.totalTime} mins</span></p>
                 </div>
             ))
         }
