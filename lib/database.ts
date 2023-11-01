@@ -4,6 +4,8 @@ import Update from '@/models/Update';
 import Milestone from '@/models/Milestone';
 import { profanity } from '@2toad/profanity';
 import {admins} from '../lib/admins'
+import { Schema } from 'mongoose';
+
 
 interface Tasks {
     [task: string]: number;  
@@ -11,6 +13,26 @@ interface Tasks {
 
 interface MilestoneObjectType {
     [key: string]: string[]
+}
+
+type UpdateType = {
+    tasks: {
+      [task: string]: number;  
+    },
+    day: number,
+    username: string,
+    _id: string,
+    created: Date,
+    house: string
+}
+
+type MilestoneType = {
+    _id: Schema.Types.ObjectId
+    name: string,
+    username: string,
+    tasks: string[],
+    status: boolean,
+    totalTime: number
 }
 
 export async function get_user(username: string) {
@@ -130,7 +152,6 @@ export async function create_update(username: string, date: Date, rating: number
             milestonesObject[name] = [i]
         }
     }
-    console.log(milestonesObject)
     for (let name of Object.keys(milestonesObject)){
         const milestone = await get_milestone(name, username)
         var time = 0;
@@ -194,17 +215,34 @@ export async function unban_user(username: string, admin: string){
 }
 
 export async function delete_update(update_id: string, admin: string){
-    const update = await get_update(update_id)
+    const update: UpdateType = await get_update(update_id)
     if (update.username == admin){
-        await Update.deleteOne({_id: update_id})
-        return true
+        // do nothing
     }
     else if (admins.includes(admin)){
-        await Update.deleteOne({_id: update_id})
-        return true
+        // do nothing
     } else {
         return "You are not an admin!"
     }
+    const day = String(update.day)
+    const allMilestones: MilestoneType[] = await get_all_milestones(update.username);
+    for (let milestone of allMilestones){
+        var newTotalTime = milestone.totalTime
+        var newTasks = milestone.tasks;
+        for (let taskId of newTasks){
+            if (taskId.startsWith(`${day}:`)){
+                newTasks = newTasks.filter(item => item !== taskId)
+                const time = Object.values(update.tasks)[parseInt(taskId.split(":")[1])]
+                newTotalTime = newTotalTime - time
+            }
+        }
+        if (newTasks.length != milestone.tasks.length){
+            await Milestone.findOneAndUpdate({_id: milestone._id}, {totalTime: newTotalTime, tasks: newTasks});
+        }
+    }
+    await Update.deleteOne({_id: update_id})
+
+    return true
 }
 
 export async function get_all_milestones(username: string){

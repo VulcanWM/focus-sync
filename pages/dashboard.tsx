@@ -17,7 +17,7 @@ type Props = {
 type MilestoneType = {
   name: string,
   username: string,
-  tasks: object,
+  tasks: string[],
   status: boolean,
   totalTime: number
 }
