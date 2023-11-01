@@ -197,9 +197,18 @@ export async function create_milestone(name: string, username: string){
     if (user.plan == "Premium" && milestones.length >= 25){
         return "You can only have 25 milestones!"
     }
+    if (name.length > 25){
+        return "You cannot have more than 25 characters in your milestone name!"
+    }
+    if (name.length < 2){
+        return "You must have more than 1 character in your milestone name!"
+    }
     let names = milestones.map(m => m.name);
     if (names.includes(name)){
         return "You already have a milestone with this name!"
+    }
+    if (name == "No"){
+        return "Your milestone name can't be No!"
     }
     const document = {name: name, username: username, tasks: [], status: true, totalTime: 0}
     await Milestone.create(document)

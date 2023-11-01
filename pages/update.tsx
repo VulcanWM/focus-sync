@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { useRouter } from 'next/router';
-import { get_user_from_email } from '@/lib/database';
+import { get_user_from_email, get_open_milestones } from '@/lib/database';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./api/auth/[...nextauth]"
 import { GetServerSidePropsContext } from 'next'
@@ -15,14 +15,24 @@ interface Tasks {
 }
 
 type Props = {
-    userString: string
+    userString: string,
+    milestonesString: string
 };
+
+type MilestoneType = {
+  name: string,
+  username: string,
+  tasks: object,
+  status: boolean,
+  totalTime: number
+}
 
 const moods: string[] = ["Happy", "Sad", "Angry", "Anxious", "Frustrated", "Stressed", "Relaxed", "Tired", "Excited", "Overwhelmed", "Irritated", "Motivated", "Self-loathing"]
 
-export default function Update({userString}: Props) {
+export default function Update({userString, milestonesString}: Props) {
     const router = useRouter();
     const user = JSON.parse(userString)
+    const milestones = JSON.parse(milestonesString)
 
     const [tasks, setTasks] = useState<Tasks>({})
     const [taskName, setTaskName] = useState<string>("")
@@ -31,6 +41,8 @@ export default function Update({userString}: Props) {
     const [date, setDate] = useState<string>("")
     const [mood, setMood] = useState<string>("No")
     const [msg, setMsg] = useState("Add tasks you've done today related to your goal")
+    const [milestone, setMilestone] = useState<string>("No milestone")
+    const [taskMilestones, setTaskMilestones] = useState<string[]>([])
 
     function createTask(){
         if (taskName == ""){setMsg("Give a name to your task");return}
@@ -43,9 +55,11 @@ export default function Update({userString}: Props) {
             ...tasks,
             ...{[taskName]: taskTime}
         }));
+        setTaskMilestones(oldArray => [...oldArray, milestone]);
         setMsg("Add more tasks you've done today related to your goal")
         setTaskName("")
         setTaskTime(null)
+        setMilestone("No milestone")
     }
 
     function deleteTask(task: string){
@@ -102,11 +116,21 @@ export default function Update({userString}: Props) {
                 <p className={msg.startsWith("Add")?styles.success:styles.red}>{msg}</p>
                 <input id="taskName" className={styles.input} value={taskName} placeholder="productive task" type="text" onChange={e => setTaskName(e.target.value)}></input>
                 <input id="taskTime" className={styles.input} value={taskTime || ''} placeholder="time taken (mins)" type="number" onChange={e => setTaskTime(parseFloat(e.target.value))}></input>
+                <select  onChange={e => setMilestone(e.target.value)} value={milestone} className={styles.input} name="milestone" id="milestone">
+                  <option value="No">No milestone</option>
+                  { 
+                    milestones.map((milestone: MilestoneType) => ( 
+                      <>
+                        <option value={milestone.name}>{milestone.name}</option>
+                      </>
+                    ))
+                  }
+                </select>
                 <button className={styles.button} onClick={createTask}>create task</button>
                 { 
-                    Object.keys(tasks).map((task) => ( 
-                        <div title={task} onDrop={(event) => drop(event)} onDragOver={(event) => allowDrop(event)} onDragStart={(event) => drag(event)} draggable={true}>
-                            <p title={task} className={styles.name}> ✓ {task} <FontAwesomeIcon onClick={() => deleteTask(task)} icon={faTrashCan} style={{width: "0.8rem", height: "0.8rem", cursor:"pointer", color: "red"}}/></p>
+                    Object.keys(tasks).map((task: string, index: number) => ( 
+                        <div key={task} title={task} onDrop={(event) => drop(event)} onDragOver={(event) => allowDrop(event)} onDragStart={(event) => drag(event)} draggable={true}>
+                            <p title={task} className={styles.name}> ✓ {task} <FontAwesomeIcon onClick={() => deleteTask(task)} icon={faTrashCan} style={{width: "0.8rem", height: "0.8rem", cursor:"pointer", color: "red"}}/> <span className={styles.light}>{taskMilestones[index]}</span></p>
                             <p title={task} className={styles.time}>{tasks[task as keyof Tasks]} mins</p>
                         </div>
                     ))
@@ -142,6 +166,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     if (session){
       const email = session!.user!.email as string;
       const user = await get_user_from_email(email)
+      const milestones = await get_open_milestones(user.username)
   
       if (user == false){
         return {
@@ -153,7 +178,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       } else {
         return {
           props: {
-            userString: JSON.stringify(user)
+            userString: JSON.stringify(user),
+            milestonesString: JSON.stringify(milestones)
           },
         }
       }

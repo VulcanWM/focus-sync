@@ -36,6 +36,7 @@ export default function Dashboard( {userString, openMilestonesString, closedMile
     axios.post(`/api/create-milestone`, userData).then((response) => {
         if (response.data.error == false){
             setOpenMilestones(oldArray => [...oldArray, response.data.data]);
+            setName("")
         } else {
             setMsg(response.data.message)
         }
