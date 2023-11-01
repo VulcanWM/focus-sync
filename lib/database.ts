@@ -9,6 +9,10 @@ interface Tasks {
     [task: string]: number;  
 }
 
+interface MilestoneObjectType {
+    [key: string]: string[]
+}
+
 export async function get_user(username: string) {
     await dbConnect();
     const user = await User.find({username: username})
@@ -66,7 +70,7 @@ export async function get_last_update(username: string){
     return last_update
 }
 
-export async function create_update(username: string, date: Date, rating: number, tasksOriginal: Tasks, mood: string){
+export async function create_update(username: string, date: Date, rating: number, tasksOriginal: Tasks, mood: string, milestones: string[]){
     const user = await get_user(username)
     if (user == false){
         return "Your username does not exist!"
@@ -115,6 +119,29 @@ export async function create_update(username: string, date: Date, rating: number
         }
     }
     const update = await Update.create({_id: update_id, username: username, house: house, date: date, rating: rating, tasks: tasks, day: day, created: created, mood: mood})
+    const milestonesObject:MilestoneObjectType = {}
+    for (let i in milestones){
+        const name = milestones[i]
+        if (Object.keys(milestonesObject).includes(name)){
+            const oldArray = milestonesObject[name]
+            oldArray.push(i)
+            milestonesObject[name] = oldArray
+        } else {
+            milestonesObject[name] = [i]
+        }
+    }
+    console.log(milestonesObject)
+    for (let name of Object.keys(milestonesObject)){
+        const milestone = await get_milestone(name, username)
+        var time = 0;
+        const milestoneTasks = milestone.tasks;
+        for (let taskIndex of milestonesObject[name]){
+            milestoneTasks.push(String(day) + ":" + taskIndex)
+            time += Object.values(tasksOriginal)[parseInt(taskIndex)]
+        }
+        const newTotalTime = milestone.totalTime + time;
+        await Milestone.findOneAndUpdate({_id: milestone._id}, {totalTime: newTotalTime, tasks: milestoneTasks});
+    }
     return true
 }
 

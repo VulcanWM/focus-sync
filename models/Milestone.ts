@@ -5,7 +5,7 @@ const MilestoneSchema = new mongoose.Schema({
   username: String,
   tasks: [String],
   status: Boolean,
-  totalNumber: Number
+  totalTime: Number
 })
 
 

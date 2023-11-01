@@ -98,7 +98,8 @@ export default function Update({userString, milestonesString}: Props) {
             tasks: tasks,
             rating: rating,
             date: date,
-            mood: mood
+            mood: mood,
+            milestones: taskMilestones
         }
         axios.post(`/api/update`, userData).then((response) => {
             if (response.data.error == false){

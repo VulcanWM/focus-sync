@@ -23,9 +23,10 @@ export default async function handler(
     const tasks: Tasks = req.body.tasks;
     const dateString = String(req.body.date);
     const date = new Date(dateString)
+    const milestones:string[] = req.body.milestones
     const user = await get_user_from_email(session!.user!.email as string);
     const username = user.username;
-    const func = await create_update(username, date, rating, tasks, mood)
+    const func = await create_update(username, date, rating, tasks, mood, milestones)
     if (func == true){
       res.status(200).json({ message: 'Created!', error: false })
     } else {
