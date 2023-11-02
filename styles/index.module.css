@@ -1,10 +1,10 @@
 .join_button {
-  width:7rem;
-  height:3rem;
+  width:5.5rem;
+  height:2.5rem;
   background: white;
   color: black;
   border: none;
-  margin-top: 1rem;
+  margin-bottom: 2rem;
 }
 
 .join_button:hover {
@@ -14,32 +14,27 @@
 
 .join_link {
   font-weight:bold;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   text-decoration: none;
   color: black;
 }
 
 .title {
   font-size: 4rem;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 }
 
-.point {
+.description {
   color: #c1bebe;
   font-size: 1.3rem;
-  font-weight: bold;
-  text-align: left;
-  margin-bottom: 1rem;
 }
-
-/* .caption {
-  font-size: 1.3rem;
-} */
 
 @media (max-width:500px) {
   .title {
     font-size: 3rem;
   }
-  .point {
+  .description {
     font-size: 1rem;
   }
 }
@@ -48,7 +43,7 @@
   .title {
       font-size: 2.4rem;
   }
-  .point {
+  .description {
     font-size: 1rem;
   }
 }
@@ -67,4 +62,62 @@
   100% {
     opacity: 1;
   }
+}
+
+.features {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature {
+  width: 420px;
+  height: 250px;
+  border-radius: 20px;
+  border: 1px solid rgb(73, 72, 72);
+  background: rgb(24, 24, 24);
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+}
+
+.featureName {
+  text-align: left;
+  font-size: 1.3rem;
+  margin-left: 1rem;
+}
+
+.featureName.azuriteName {
+  color: #25B1FF;
+}
+
+.featureName.lumosName {
+  color: #FFC700;
+}
+
+.featureName.verdantName {
+  color: #55F50A
+}
+
+/* .featureDesc {
+  
+} */
+
+.point {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.verdant {
+  border: 1px dashed #55F50A;
+}
+
+.lumos {
+  border: 1px dashed #FFC700;
+}
+
+.azurite {
+  border: 1px dashed #25B1FF;
+  /* color: #25B1FF; */
 }
