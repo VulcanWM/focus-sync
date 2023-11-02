@@ -26,8 +26,8 @@
 }
 
 .description {
-  color: #c1bebe;
-  font-size: 1.3rem;
+  font-size: 1.7rem;
+  font-weight: bold;
 }
 
 @media (max-width:500px) {
@@ -35,7 +35,7 @@
     font-size: 3rem;
   }
   .description {
-    font-size: 1rem;
+    font-size: 1.7rem;
   }
 }
 
@@ -44,7 +44,7 @@
       font-size: 2.4rem;
   }
   .description {
-    font-size: 1rem;
+    font-size: 1.5rem;
   }
 }
 

@@ -29,7 +29,7 @@ export default function Home( {username}:Props  ) {
   return (
     <Layout pageTitle="Home">
       <div id="textCenter">
-        <h1 className={styles.title}>FocusSync</h1>
+        {/* <h1 className={styles.title}>FocusSync</h1> */}
         <p className={styles.description}>Transform dreams into reality with our goal-driven productivity platform.</p>
         <button onClick={redirectToJoin} className={styles.join_button}><span className={styles.join_link}>join us</span></button>
         {/* <ul>
