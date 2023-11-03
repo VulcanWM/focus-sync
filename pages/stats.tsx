@@ -114,7 +114,7 @@ export default function Home( { userString, updatesString}:Props ) {
         </div>
         <h2 className={styles.textCenter}>Badges</h2>
         {allMonths.length == 0 ?
-            <p className={styles.textCenter}>Submit an update to see your earn your first badge!</p>
+            <p className={styles.textCenter}>Submit an update to earn your first badge!</p>
         :   <p className={styles.textCenter}>These badges are for the number of days you've submitted an update!</p>
         }
         <div className={styles.badges}>
