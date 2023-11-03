@@ -117,7 +117,7 @@ export default function Update({userString, milestonesString}: Props) {
                 <p className={msg.startsWith("Add")?styles.success:styles.red}>{msg}</p>
                 <input id="taskName" className={styles.input} value={taskName} placeholder="productive task" type="text" onChange={e => setTaskName(e.target.value)}></input>
                 <input id="taskTime" className={styles.input} value={taskTime || ''} placeholder="time taken (mins)" type="number" onChange={e => setTaskTime(parseFloat(e.target.value))}></input>
-                <select  onChange={e => setMilestone(e.target.value)} value={milestone} className={styles.input} name="milestone" id="milestone">
+                <select onChange={e => setMilestone(e.target.value)} value={milestone} className={styles.input} name="milestone" id="milestone">
                   <option value="No">No milestone</option>
                   { 
                     milestones.map((milestone: MilestoneType) => ( 
@@ -140,7 +140,7 @@ export default function Update({userString, milestonesString}: Props) {
                   <>
                       <input min={0} max={5} className={styles.input} value={rating} placeholder="rating productivity" type="number" onChange={e => setRating(parseInt(e.target.value))}></input>
                       <input className={styles.input} value={date} placeholder="update date" type="date" onChange={e => setDate(e.target.value)}></input>
-                      <select  onChange={e => setMood(e.target.value)} value={mood} className={styles.input} name="mood" id="mood">
+                      <select onChange={e => setMood(e.target.value)} value={mood} className={styles.input} name="mood" id="mood">
                         <option value="No">No emotion</option>
                         { 
                           moods.map((mood) => ( 

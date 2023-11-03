@@ -5,6 +5,7 @@ html {
   background: #121212;
   color: white;
   font-size: calc(15px + 0.390625vw);
+  color-scheme: dark;
 }
 
 #content {
