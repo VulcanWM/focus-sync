@@ -112,38 +112,56 @@ export default function UserPage( { userString, updatesString}:Props ) {
 
   const correlation = calculateCorrelation(updates);
   const sortedMoodProductivity = Object.keys(correlation).sort((a, b) => correlation[b].averageRate - correlation[a].averageRate);
-  const { min: minValueMood, max: maxValueMood } = findMinMaxAverage(Object.values(correlation));
+  var minValueMood: number;
+  var maxValueMood: number;
+  if (updates.length == 0){
+    maxValueMood = 0;
+    minValueMood = 0;
+  } else {
+    var { min: minValueMood, max: maxValueMood } = findMinMaxAverage(Object.values(correlation));
+  }
 
   const mostProductiveDays = getMostProductiveDays(updates);
   const sortedProductiveDays = Object.keys(mostProductiveDays).sort((a, b) => mostProductiveDays[b].averageRate - mostProductiveDays[a].averageRate);
-  const { min: minValueDay, max: maxValueDay } = findMinMaxAverage(Object.values(mostProductiveDays));
+  var minValueDay: number;
+  var maxValueDay: number;
+  if (updates.length == 0){
+    minValueMood = 0;
+    maxValueMood = 0;
+  } else {
+    var { min: minValueDay, max: maxValueDay } = findMinMaxAverage(Object.values(mostProductiveDays));
+  }
 
   return (
     <Layout pageTitle={`${user.username}'s profile`}>
         <div id="textCenter">
-            <h2>Your Insights</h2>
-            <h3>Moods</h3>
-            <div className={styles.flexParent}>
-              { 
-                sortedMoodProductivity.map((mood: string) => ( 
-                    <div className={`${styles.flexChild} ${correlation[mood].averageRate === maxValueMood ? (styles.best) : ''} ${correlation[mood].averageRate === minValueMood ? (styles.worst) : ''}`} key={mood + " mood"}>
-                        <p><strong>{mood}</strong></p>
-                        <p>Average Productivity Rate: {round(correlation[mood].averageRate)}</p>
-                    </div>
-                ))
-              }
+          <h2>Your Insights</h2>
+          {updates.length == 0 ? <p>Submit an update to see your insights!</p>:
+            <div>
+              <h3>Moods</h3>
+              <div className={styles.flexParent}>
+                { 
+                  sortedMoodProductivity.map((mood: string) => ( 
+                      <div className={`${styles.flexChild} ${correlation[mood].averageRate === maxValueMood ? (styles.best) : ''} ${correlation[mood].averageRate === minValueMood ? (styles.worst) : ''}`} key={mood + " mood"}>
+                          <p><strong>{mood}</strong></p>
+                          <p>Average Productivity Rate: {round(correlation[mood].averageRate)}</p>
+                      </div>
+                  ))
+                }
+              </div>
+              <h3>Days</h3>
+              <div className={styles.flexParent}>
+                { 
+                  sortedProductiveDays.map((day:string) => ( 
+                      <div className={`${styles.flexChild} ${mostProductiveDays[day].averageRate === maxValueDay ? (styles.best) : ''} ${mostProductiveDays[day].averageRate === minValueDay ? (styles.worst) : ''}`} key={day + " day"}>
+                          <p><strong>{day}</strong></p>
+                          <p>Average Productivity Rate: {round(mostProductiveDays[day].averageRate)}</p>
+                      </div>
+                  ))
+                }
+              </div>
             </div>
-            <h3>Days</h3>
-            <div className={styles.flexParent}>
-              { 
-                sortedProductiveDays.map((day:string) => ( 
-                    <div className={`${styles.flexChild} ${mostProductiveDays[day].averageRate === maxValueDay ? (styles.best) : ''} ${mostProductiveDays[day].averageRate === minValueDay ? (styles.worst) : ''}`} key={day + " day"}>
-                        <p><strong>{day}</strong></p>
-                        <p>Average Productivity Rate: {round(mostProductiveDays[day].averageRate)}</p>
-                    </div>
-                ))
-              }
-            </div>
+          }
         </div>
     </Layout>
   );

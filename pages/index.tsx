@@ -29,14 +29,8 @@ export default function Home( {username}:Props  ) {
   return (
     <Layout pageTitle="Home">
       <div id="textCenter">
-        {/* <h1 className={styles.title}>FocusSync</h1> */}
         <p className={styles.description}>Transform dreams into reality with our goal-driven productivity platform.</p>
         <button onClick={redirectToJoin} className={styles.join_button}><span className={styles.join_link}>join us</span></button>
-        {/* <ul>
-          <li className={styles.point}>Set a goal</li>
-          <li className={styles.point}>Track the time you spend on each task</li>
-          <li className={styles.point}>Stay motivated by seeing how others are performing</li>
-        </ul> */}
         <div className={styles.features}>
           <div className={styles.feature + " " + styles.verdant}>
               <h3 className={styles.featureName + " " + styles.verdantName}><Goal className={styles.icon}/> Set your goal</h3>

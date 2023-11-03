@@ -8,6 +8,29 @@ import { getServerSession } from "next-auth/next"
 import { admins } from '@/lib/admins'
 import { useRouter } from 'next/router';
 import axios from 'axios'
+import html2canvas from "html2canvas";
+import {useRef} from 'react'
+
+const exportAsImage = async (element: HTMLElement, imageFileName: string): Promise<void> => {
+  const canvas = await html2canvas(element, { backgroundColor: '#121212' });
+  const image = canvas.toDataURL("image/png", 1.0);
+  downloadImage(image, imageFileName);
+};
+
+const downloadImage = (blob: string, fileName: string): void => {
+  const fakeLink = window.document.createElement("a");
+  fakeLink.style.display = "none";
+  fakeLink.download = fileName;
+
+  fakeLink.href = blob;
+
+  document.body.appendChild(fakeLink);
+  fakeLink.click();
+  document.body.removeChild(fakeLink);
+
+  fakeLink.remove();
+};
+  
 
 type Props = {
     updateString: string,
@@ -31,23 +54,28 @@ export default function Home( { updateString, admin, your_username}:Props ) {
         }
     });
   }
+
+  const exportRef = useRef<HTMLDivElement | null>(null);
   
   return (
     <Layout pageTitle={`${update.username} day ${update.day} update`}>
       <div id="content">
-        <h2 className={styles.user_heading}><img className={styles.house} alt={`${update.house} logo`} src={`/${update.house}.png`}/> <Link href={`/user/${update.username}`}>{update.username}</Link> day {update.day}</h2>
-        <p>{update.date.split("T")[0]}</p>
         {((update.username == your_username) || admin)&&<button onClick={() => (deleteUpdate(update._id))}>delete update</button>}
-        <p>Productivity Rating: <strong>{update.rating as string}</strong></p>
-        <div className={styles.update}>
-            { 
-                Object.keys(update.tasks).map((task: string, index:number) => ( 
-                    <>
-                        <p className={styles.name}>✓ {task}</p>
-                        <p className={`${styles.time} ${styles[update.house]}`}>{update.tasks[task]} mins</p>
-                    </>
-                ))
-            }
+        <button onClick={() => exportAsImage(exportRef.current!, `${update.date}update.png`)}>Capture Image</button> 
+        <div ref={exportRef}>
+          <h2 className={styles.user_heading}><img className={styles.house} alt={`${update.house} logo`} src={`/${update.house}.png`}/> <Link href={`/user/${update.username}`}>{update.username}</Link> day {update.day}</h2>
+          <p>{update.date.split("T")[0]}</p>
+          <p>Productivity Rating: <strong>{update.rating as string}</strong></p>
+          <div className={styles.update}>
+              { 
+                  Object.keys(update.tasks).map((task: string, index:number) => ( 
+                      <>
+                          <p className={styles.name}>✓ {task}</p>
+                          <p className={`${styles.time} ${styles[update.house]}`}>{update.tasks[task]} mins</p>
+                      </>
+                  ))
+              }
+          </div>
         </div>
       </div>
     </Layout>
