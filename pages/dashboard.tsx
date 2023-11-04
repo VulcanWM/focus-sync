@@ -95,7 +95,12 @@ export default function Dashboard( {userString, openTopicsString, closedTopicsSt
         { 
             openTopics.map((topic: TopicType) => ( 
                 <div key={topic.name}>
-                    <p><CheckSquare onClick={() => closeTopic(topic.name)}/> {topic.name} <Trash2 onClick={() => deleteTopic(topic.name, true)}/> <span className={styles[user.house]}>{topic.totalTime} mins</span></p>
+                    <p><CheckSquare onClick={() => closeTopic(topic.name)}/> {topic.name} <Trash2 onClick={() => deleteTopic(topic.name, true)}/> <span className={styles[user.house]}>{topic.totalTime} mins</span> </p>
+                    <p>Level: <span className={styles[user.house]}>{1+(Math.floor(topic.totalTime/500))}</span></p>
+                    <p><span className={styles[user.house]}>{(topic.totalTime%500)/5}% ({500-(topic.totalTime%500)} mins)</span> to next level</p>
+                    <div className={styles.bar}>
+                      <span className={styles[`${user.house}Bar`]} style={{width: `${(topic.totalTime%500)/5}%`}}></span>
+                    </div>
                 </div>
             ))
         }

@@ -57,3 +57,36 @@
 .azurite {
     color: #25B1FF;
 }
+
+.bar {
+    box-sizing: content-box;
+    height: 20px; /* Can be anything */
+    position: relative;
+    background: #555;
+    border-radius: 25px;
+    padding: 10px;
+}
+.bar > span {
+    display: block;
+    height: 100%;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.verdantBar {
+    background-color: #55F50A;
+}
+
+.erythroBar {
+    background-color: #ff0000;
+}
+
+.lumosBar {
+    background-color: #FFC700;
+}
+
+.azuriteBar {
+    background-color: #25B1FF;
+}
