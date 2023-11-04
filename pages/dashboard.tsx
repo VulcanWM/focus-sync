@@ -2,7 +2,7 @@ import Layout from '@/components/layout';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./api/auth/[...nextauth]"
 import { GetServerSidePropsContext } from 'next'
-import { get_user_from_email, get_open_milestones, get_closed_milestones } from '@/lib/database';
+import { get_user_from_email, get_open_topics, get_closed_topics } from '@/lib/database';
 import styles from '@/styles/dashboard.module.css'
 import { useState } from 'react';
 import axios from 'axios'
@@ -10,11 +10,11 @@ import { Trash2, CheckSquare, GitCompareArrows } from 'lucide-react';
 
 type Props = {
   userString: string,
-  openMilestonesString: string,
-  closedMilestonesString: string
+  openTopicsString: string,
+  closedTopicsString: string
 };
 
-type MilestoneType = {
+type TopicType = {
   name: string,
   username: string,
   tasks: string[],
@@ -22,20 +22,20 @@ type MilestoneType = {
   totalTime: number
 }
 
-export default function Dashboard( {userString, openMilestonesString, closedMilestonesString}: Props ) {
+export default function Dashboard( {userString, openTopicsString, closedTopicsString}: Props ) {
   const user = JSON.parse(userString)
-  const [openMilestones, setOpenMilestones] = useState<MilestoneType[]>(JSON.parse(openMilestonesString))
-  const [closedMilestones, setClosedMilestones] = useState<MilestoneType[]>(JSON.parse(closedMilestonesString))
+  const [openTopics, setOpenTopics] = useState<TopicType[]>(JSON.parse(openTopicsString))
+  const [closedTopics, setClosedTopics] = useState<TopicType[]>(JSON.parse(closedTopicsString))
   const [name, setName] = useState<string>("")
   const [msg, setMsg] = useState<string>("")
 
-  async function createMilestone(){
+  async function createTopic(){
     const userData = {
       name: name
     }
-    axios.post(`/api/create-milestone`, userData).then((response) => {
+    axios.post(`/api/create-topic`, userData).then((response) => {
         if (response.data.error == false){
-            setOpenMilestones(oldArray => [...oldArray, response.data.data]);
+            setOpenTopics(oldArray => [...oldArray, response.data.data]);
             setName("")
         } else {
             setMsg(response.data.message)
@@ -43,16 +43,16 @@ export default function Dashboard( {userString, openMilestonesString, closedMile
     });
   }
 
-  async function deleteMilestone(milestoneName: string, status: boolean){
+  async function deleteTopic(topicName: string, status: boolean){
     const userData = {
-      name: milestoneName
+      name: topicName
     }
-    axios.post(`/api/delete-milestone`, userData).then((response) => {
+    axios.post(`/api/delete-topic`, userData).then((response) => {
         if (response.data.error == false){
             if (status == true){
-              setOpenMilestones(openMilestones.filter(item => item.name !== milestoneName));
+              setOpenTopics(openTopics.filter(item => item.name !== topicName));
             } else {
-              setClosedMilestones(closedMilestones.filter(item => item.name !== milestoneName));
+              setClosedTopics(closedTopics.filter(item => item.name !== topicName));
             }
         } else {
             setMsg(response.data.message)
@@ -60,28 +60,28 @@ export default function Dashboard( {userString, openMilestonesString, closedMile
     });
   }
 
-  async function closeMilestone(milestoneName: string){
+  async function closeTopic(topicName: string){
     const userData = {
-      name: milestoneName
+      name: topicName
     }
-    axios.post(`/api/close-milestone`, userData).then((response) => {
+    axios.post(`/api/close-topic`, userData).then((response) => {
         if (response.data.error == false){
-            setOpenMilestones(openMilestones.filter(item => item.name !== milestoneName));
-            setClosedMilestones(oldArray => [...oldArray, response.data.data]);
+            setOpenTopics(openTopics.filter(item => item.name !== topicName));
+            setClosedTopics(oldArray => [...oldArray, response.data.data]);
         } else {
             setMsg(response.data.message)
         }
     });
   }
 
-  async function reopenMilestone(milestoneName: string){
+  async function reopenTopic(topicName: string){
     const userData = {
-      name: milestoneName
+      name: topicName
     }
-    axios.post(`/api/reopen-milestone`, userData).then((response) => {
+    axios.post(`/api/reopen-topic`, userData).then((response) => {
         if (response.data.error == false){
-            setClosedMilestones(closedMilestones.filter(item => item.name !== milestoneName));
-            setOpenMilestones(oldArray => [...oldArray, response.data.data]);
+            setClosedTopics(closedTopics.filter(item => item.name !== topicName));
+            setOpenTopics(oldArray => [...oldArray, response.data.data]);
         } else {
             setMsg(response.data.message)
         }
@@ -91,26 +91,25 @@ export default function Dashboard( {userString, openMilestonesString, closedMile
   return (
     <Layout pageTitle="Dashboard">
       <div id="content_notcenter">
-        <h1>hey {user.username}</h1>
-        <h2>Open Milestones</h2>
+        <h2>Open Topics</h2>
         { 
-            openMilestones.map((milestone: MilestoneType) => ( 
-                <div key={milestone.name}>
-                    <p><CheckSquare onClick={() => closeMilestone(milestone.name)}/> {milestone.name} <Trash2 onClick={() => deleteMilestone(milestone.name, true)}/> <span className={styles[user.house]}>{milestone.totalTime} mins</span></p>
+            openTopics.map((topic: TopicType) => ( 
+                <div key={topic.name}>
+                    <p><CheckSquare onClick={() => closeTopic(topic.name)}/> {topic.name} <Trash2 onClick={() => deleteTopic(topic.name, true)}/> <span className={styles[user.house]}>{topic.totalTime} mins</span></p>
                 </div>
             ))
         }
-        <h2>Closed Milestones</h2>
+        <h2>Closed Topics</h2>
         { 
-            closedMilestones.map((milestone: MilestoneType) => ( 
-                <div key={milestone.name}>
-                    <p><GitCompareArrows onClick={() => reopenMilestone(milestone.name)}/> {milestone.name} <Trash2 onClick={() => deleteMilestone(milestone.name, false)}/> <span className={styles[user.house]}>{milestone.totalTime} mins</span></p>
+            closedTopics.map((topic: TopicType) => ( 
+                <div key={topic.name}>
+                    <p><GitCompareArrows onClick={() => reopenTopic(topic.name)}/> {topic.name} <Trash2 onClick={() => deleteTopic(topic.name, false)}/> <span className={styles[user.house]}>{topic.totalTime} mins</span></p>
                 </div>
             ))
         }
         <p className={styles.red}>{msg}</p>
-        <input id="name" className={styles.input} value={name} placeholder="milestone name" type="text" onChange={e => setName(e.target.value)}></input>
-        <button className={styles.button} onClick={createMilestone}>create milestone</button>
+        <input id="name" className={styles.input} value={name} placeholder="topic name" type="text" onChange={e => setName(e.target.value)}></input>
+        <button className={styles.button} onClick={createTopic}>create topic</button>
       </div>
     </Layout>
   )
@@ -125,8 +124,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   if (session){
     const email = session!.user!.email as string;
     const user = await get_user_from_email(email)
-    const openMilestones = await get_open_milestones(user.username)
-    const closedMilestones = await get_closed_milestones(user.username)
+    const openTopics = await get_open_topics(user.username)
+    const closedTopics = await get_closed_topics(user.username)
 
     if (user == false){
       return {
@@ -139,8 +138,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
       return {
         props: {
           userString: JSON.stringify(user),
-          openMilestonesString: JSON.stringify(openMilestones),
-          closedMilestonesString: JSON.stringify(closedMilestones)
+          openTopicsString: JSON.stringify(openTopics),
+          closedTopicsString: JSON.stringify(closedTopics)
         },
       }
     }

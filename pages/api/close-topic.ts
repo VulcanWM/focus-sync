@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { close_milestone, get_user_from_email } from '@/lib/database';
+import { close_topic, get_user_from_email } from '@/lib/database';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./auth/[...nextauth]"
 
@@ -18,7 +18,7 @@ export default async function handler(
     const name = req.body.name as string;
     const user = await get_user_from_email(session!.user!.email as string);
     const username = user.username;
-    const func = await close_milestone(name, username)
+    const func = await close_topic(name, username)
     if (typeof func == "object"){
       res.status(200).json({ message: 'Closed!', error: false, data: func })
     } else {

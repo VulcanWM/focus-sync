@@ -30,7 +30,7 @@ export default function Home( {username}:Props  ) {
     <Layout pageTitle="Home">
       <div id="textCenter">
         <p className={styles.description}>Transform dreams into reality with our goal-driven productivity platform.</p>
-        <button onClick={redirectToJoin} className={styles.join_button}><span className={styles.join_link}>join us</span></button>
+        <button onClick={redirectToJoin} className={styles.join_button}><span className={styles.join_link}>Start Your Journey Here!</span></button>
         <div className={styles.features}>
           <div className={styles.feature + " " + styles.verdant}>
               <h3 className={styles.featureName + " " + styles.verdantName}><Goal className={styles.icon}/> Set your goal</h3>

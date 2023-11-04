@@ -1,10 +1,11 @@
 .join_button {
-  width:5.5rem;
+  width:16rem;
   height:2.5rem;
   background: white;
   color: black;
   border: none;
   margin-bottom: 2rem;
+  border-radius: 0.5rem;
 }
 
 .join_button:hover {

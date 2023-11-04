@@ -1,7 +1,7 @@
 import dbConnect from './mongodb'
 import User from '../models/User'
 import Update from '@/models/Update';
-import Milestone from '@/models/Milestone';
+import Topic from '@/models/Topic';
 import { profanity } from '@2toad/profanity';
 import {admins} from '../lib/admins'
 import { Schema } from 'mongoose';
@@ -11,7 +11,7 @@ interface Tasks {
     [task: string]: number;  
 }
 
-interface MilestoneObjectType {
+interface TopicObjectType {
     [key: string]: string[]
 }
 
@@ -26,7 +26,7 @@ type UpdateType = {
     house: string
 }
 
-type MilestoneType = {
+type TopicType = {
     _id: Schema.Types.ObjectId
     name: string,
     username: string,
@@ -92,7 +92,7 @@ export async function get_last_update(username: string){
     return last_update
 }
 
-export async function create_update(username: string, date: Date, rating: number, tasksOriginal: Tasks, mood: string, milestones: string[]){
+export async function create_update(username: string, date: Date, rating: number, tasksOriginal: Tasks, mood: string, topics: string[]){
     const user = await get_user(username)
     if (user == false){
         return "Your username does not exist!"
@@ -141,27 +141,27 @@ export async function create_update(username: string, date: Date, rating: number
         }
     }
     const update = await Update.create({_id: update_id, username: username, house: house, date: date, rating: rating, tasks: tasks, day: day, created: created, mood: mood})
-    const milestonesObject:MilestoneObjectType = {}
-    for (let i in milestones){
-        const name = milestones[i]
-        if (Object.keys(milestonesObject).includes(name)){
-            const oldArray = milestonesObject[name]
+    const topicsObject:TopicObjectType = {}
+    for (let i in topics){
+        const name = topics[i]
+        if (Object.keys(topicsObject).includes(name)){
+            const oldArray = topicsObject[name]
             oldArray.push(i)
-            milestonesObject[name] = oldArray
+            topicsObject[name] = oldArray
         } else {
-            milestonesObject[name] = [i]
+            topicsObject[name] = [i]
         }
     }
-    for (let name of Object.keys(milestonesObject)){
-        const milestone = await get_milestone(name, username)
+    for (let name of Object.keys(topicsObject)){
+        const topic = await get_topic(name, username)
         var time = 0;
-        const milestoneTasks = milestone.tasks;
-        for (let taskIndex of milestonesObject[name]){
-            milestoneTasks.push(String(day) + ":" + taskIndex)
+        const topicTasks = topic.tasks;
+        for (let taskIndex of topicsObject[name]){
+            topicTasks.push(String(day) + ":" + taskIndex)
             time += Object.values(tasksOriginal)[parseInt(taskIndex)]
         }
-        const newTotalTime = milestone.totalTime + time;
-        await Milestone.findOneAndUpdate({_id: milestone._id}, {totalTime: newTotalTime, tasks: milestoneTasks});
+        const newTotalTime = topic.totalTime + time;
+        await Topic.findOneAndUpdate({_id: topic._id}, {totalTime: newTotalTime, tasks: topicTasks});
     }
     return true
 }
@@ -225,10 +225,10 @@ export async function delete_update(update_id: string, admin: string){
         return "You are not an admin!"
     }
     const day = String(update.day)
-    const allMilestones: MilestoneType[] = await get_all_milestones(update.username);
-    for (let milestone of allMilestones){
-        var newTotalTime = milestone.totalTime
-        var newTasks = milestone.tasks;
+    const allTopics: TopicType[] = await get_all_topics(update.username);
+    for (let topic of allTopics){
+        var newTotalTime = topic.totalTime
+        var newTasks = topic.tasks;
         for (let taskId of newTasks){
             if (taskId.startsWith(`${day}:`)){
                 newTasks = newTasks.filter(item => item !== taskId)
@@ -236,8 +236,8 @@ export async function delete_update(update_id: string, admin: string){
                 newTotalTime = newTotalTime - time
             }
         }
-        if (newTasks.length != milestone.tasks.length){
-            await Milestone.findOneAndUpdate({_id: milestone._id}, {totalTime: newTotalTime, tasks: newTasks});
+        if (newTasks.length != topic.tasks.length){
+            await Topic.findOneAndUpdate({_id: topic._id}, {totalTime: newTotalTime, tasks: newTasks});
         }
     }
     await Update.deleteOne({_id: update_id})
@@ -245,91 +245,91 @@ export async function delete_update(update_id: string, admin: string){
     return true
 }
 
-export async function get_all_milestones(username: string){
-    const milestones = await Milestone.find({username: username})
-    return milestones
+export async function get_all_topics(username: string){
+    const topics = await Topic.find({username: username})
+    return topics
 }
 
-export async function create_milestone(name: string, username: string){
-    const milestones = await get_all_milestones(username)
+export async function create_topic(name: string, username: string){
+    const topics = await get_all_topics(username)
     const user = await get_user(username)
     if (user == false){
         return "You are not logged in!"
     }
-    if (user.plan == "Standard" && milestones.length >= 10){
-        return "You can only have 10 milestones!"
+    if (user.plan == "Standard" && topics.length >= 10){
+        return "You can only have 10 topics!"
     }
-    if (user.plan == "Premium" && milestones.length >= 25){
-        return "You can only have 25 milestones!"
+    if (user.plan == "Premium" && topics.length >= 25){
+        return "You can only have 25 topics!"
     }
     if (name.length > 25){
-        return "You cannot have more than 25 characters in your milestone name!"
+        return "You cannot have more than 25 characters in your topic name!"
     }
     if (name.length < 2){
-        return "You must have more than 1 character in your milestone name!"
+        return "You must have more than 1 character in your topic name!"
     }
-    let names = milestones.map(m => m.name);
+    let names = topics.map(m => m.name);
     if (names.includes(name)){
-        return "You already have a milestone with this name!"
+        return "You already have a topic with this name!"
     }
     if (name == "No"){
-        return "Your milestone name can't be No!"
+        return "Your topic name can't be No!"
     }
     const document = {name: name, username: username, tasks: [], status: true, totalTime: 0}
-    await Milestone.create(document)
+    await Topic.create(document)
     return document
 }
 
-export async function get_open_milestones(username: string){
-    const milestones = await Milestone.find({username: username, status: true})
-    return milestones
+export async function get_open_topics(username: string){
+    const topics = await Topic.find({username: username, status: true})
+    return topics
 }
 
-export async function get_closed_milestones(username: string){
-    const milestones = await Milestone.find({username: username, status: false})
-    return milestones
+export async function get_closed_topics(username: string){
+    const topics = await Topic.find({username: username, status: false})
+    return topics
 }
 
-export async function get_milestone(name: string, username: string){
-    const milestones = await Milestone.find({name: name, username: username})
-    if (milestones.length == 0){
+export async function get_topic(name: string, username: string){
+    const topics = await Topic.find({name: name, username: username})
+    if (topics.length == 0){
         return false
     } else {
-        return milestones[0]
+        return topics[0]
     }
 }
 
-export async function delete_milestone(name: string, username: string){
-    const milestone = await get_milestone(name, username)
-    if (milestone == false){
-        return "This milestone doesn't exist!"
+export async function delete_topic(name: string, username: string){
+    const topic = await get_topic(name, username)
+    if (topic == false){
+        return "This topic doesn't exist!"
     }
-    await Milestone.deleteOne({_id: milestone._id})
+    await Topic.deleteOne({_id: topic._id})
     return true
 }
 
-export async function close_milestone(name: string, username: string){
-    const milestone = await get_milestone(name, username)
-    if (milestone == false){
-        return "This milestone doesn't exist!"
+export async function close_topic(name: string, username: string){
+    const topic = await get_topic(name, username)
+    if (topic == false){
+        return "This topic doesn't exist!"
     }
-    if (milestone.status == false){
-        return 'This milestone is already closed!'
+    if (topic.status == false){
+        return 'This topic is already closed!'
     }
-    milestone['status'] = false
-    await Milestone.findOneAndUpdate({_id: milestone._id}, {status: false});
-    return milestone
+    topic['status'] = false
+    await Topic.findOneAndUpdate({_id: topic._id}, {status: false});
+    return topic
 }
 
-export async function reopen_milestone(name: string, username: string){
-    const milestone = await get_milestone(name, username)
-    if (milestone == false){
-        return "This milestone doesn't exist!"
+export async function reopen_topic(name: string, username: string){
+    const topic = await get_topic(name, username)
+    if (topic == false){
+        return "This topic doesn't exist!"
     }
-    if (milestone.status == true){
-        return 'This milestone is already open!'
+    if (topic.status == true){
+        return 'This topic is already open!'
     }
-    milestone['status'] = true
-    await Milestone.findOneAndUpdate({_id: milestone._id}, {status: true});
-    return milestone
+    topic['status'] = true
+    await Topic.findOneAndUpdate({_id: topic._id}, {status: true});
+    return topic
 }

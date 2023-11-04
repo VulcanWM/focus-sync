@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { useRouter } from 'next/router';
-import { get_user_from_email, get_open_milestones } from '@/lib/database';
+import { get_user_from_email, get_open_topics } from '@/lib/database';
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "./api/auth/[...nextauth]"
 import { GetServerSidePropsContext } from 'next'
@@ -16,10 +16,10 @@ interface Tasks {
 
 type Props = {
     userString: string,
-    milestonesString: string
+    topicsString: string
 };
 
-type MilestoneType = {
+type TopicType = {
   name: string,
   username: string,
   tasks: object,
@@ -29,10 +29,10 @@ type MilestoneType = {
 
 const moods: string[] = ["Happy", "Sad", "Angry", "Anxious", "Frustrated", "Stressed", "Relaxed", "Tired", "Excited", "Overwhelmed", "Irritated", "Motivated", "Self-loathing"]
 
-export default function Update({userString, milestonesString}: Props) {
+export default function Update({userString, topicsString}: Props) {
     const router = useRouter();
     const user = JSON.parse(userString)
-    const milestones = JSON.parse(milestonesString)
+    const topics = JSON.parse(topicsString)
 
     const [tasks, setTasks] = useState<Tasks>({})
     const [taskName, setTaskName] = useState<string>("")
@@ -41,8 +41,8 @@ export default function Update({userString, milestonesString}: Props) {
     const [date, setDate] = useState<string>("")
     const [mood, setMood] = useState<string>("No")
     const [msg, setMsg] = useState("Add tasks you've done today related to your goal")
-    const [milestone, setMilestone] = useState<string>("No milestone")
-    const [taskMilestones, setTaskMilestones] = useState<string[]>([])
+    const [topic, setTopic] = useState<string>("No topic")
+    const [taskTopics, setTaskTopics] = useState<string[]>([])
 
     function createTask(){
         if (taskName == ""){setMsg("Give a name to your task");return}
@@ -55,11 +55,11 @@ export default function Update({userString, milestonesString}: Props) {
             ...tasks,
             ...{[taskName]: taskTime}
         }));
-        setTaskMilestones(oldArray => [...oldArray, milestone]);
+        setTaskTopics(oldArray => [...oldArray, topic]);
         setMsg("Add more tasks you've done today related to your goal")
         setTaskName("")
         setTaskTime(null)
-        setMilestone("No milestone")
+        setTopic("No topic")
     }
 
     function deleteTask(task: string){
@@ -99,7 +99,7 @@ export default function Update({userString, milestonesString}: Props) {
             rating: rating,
             date: date,
             mood: mood,
-            milestones: taskMilestones
+            topics: taskTopics
         }
         axios.post(`/api/update`, userData).then((response) => {
             if (response.data.error == false){
@@ -117,12 +117,12 @@ export default function Update({userString, milestonesString}: Props) {
                 <p className={msg.startsWith("Add")?styles.success:styles.red}>{msg}</p>
                 <input id="taskName" className={styles.input} value={taskName} placeholder="productive task" type="text" onChange={e => setTaskName(e.target.value)}></input>
                 <input id="taskTime" className={styles.input} value={taskTime || ''} placeholder="time taken (mins)" type="number" onChange={e => setTaskTime(parseFloat(e.target.value))}></input>
-                <select onChange={e => setMilestone(e.target.value)} value={milestone} className={styles.input} name="milestone" id="milestone">
-                  <option value="No">No milestone</option>
+                <select onChange={e => setTopic(e.target.value)} value={topic} className={styles.input} name="topic" id="topic">
+                  <option value="No">No topic</option>
                   { 
-                    milestones.map((milestone: MilestoneType) => ( 
+                    topics.map((topic: TopicType) => ( 
                       <>
-                        <option value={milestone.name}>{milestone.name}</option>
+                        <option value={topic.name}>{topic.name}</option>
                       </>
                     ))
                   }
@@ -131,7 +131,7 @@ export default function Update({userString, milestonesString}: Props) {
                 { 
                     Object.keys(tasks).map((task: string, index: number) => ( 
                         <div key={task} title={task} onDrop={(event) => drop(event)} onDragOver={(event) => allowDrop(event)} onDragStart={(event) => drag(event)} draggable={true}>
-                            <p title={task} className={styles.name}> ✓ {task} <FontAwesomeIcon onClick={() => deleteTask(task)} icon={faTrashCan} style={{width: "0.8rem", height: "0.8rem", cursor:"pointer", color: "red"}}/> <span className={styles.light}>{taskMilestones[index]}</span></p>
+                            <p title={task} className={styles.name}> ✓ {task} <FontAwesomeIcon onClick={() => deleteTask(task)} icon={faTrashCan} style={{width: "0.8rem", height: "0.8rem", cursor:"pointer", color: "red"}}/> <span className={styles.light}>{taskTopics[index]}</span></p>
                             <p title={task} className={styles.time}>{tasks[task as keyof Tasks]} mins</p>
                         </div>
                     ))
@@ -167,7 +167,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     if (session){
       const email = session!.user!.email as string;
       const user = await get_user_from_email(email)
-      const milestones = await get_open_milestones(user.username)
+      const topics = await get_open_topics(user.username)
   
       if (user == false){
         return {
@@ -180,7 +180,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
         return {
           props: {
             userString: JSON.stringify(user),
-            milestonesString: JSON.stringify(milestones)
+            topicsString: JSON.stringify(topics)
           },
         }
       }
