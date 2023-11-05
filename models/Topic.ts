@@ -9,4 +9,4 @@ const TopicSchema = new mongoose.Schema({
 })
 
 
-export default mongoose.models.Milestone || mongoose.model('Topic', TopicSchema);
+export default mongoose.models.Topic || mongoose.model('Topic', TopicSchema);
