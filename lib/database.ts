@@ -144,12 +144,14 @@ export async function create_update(username: string, date: Date, rating: number
     const topicsObject:TopicObjectType = {}
     for (let i in topics){
         const name = topics[i]
-        if (Object.keys(topicsObject).includes(name)){
-            const oldArray = topicsObject[name]
-            oldArray.push(i)
-            topicsObject[name] = oldArray
-        } else {
-            topicsObject[name] = [i]
+        if (name != "No topic"){
+            if (Object.keys(topicsObject).includes(name)){
+                const oldArray = topicsObject[name]
+                oldArray.push(i)
+                topicsObject[name] = oldArray
+            } else {
+                topicsObject[name] = [i]
+            }
         }
     }
     for (let name of Object.keys(topicsObject)){
